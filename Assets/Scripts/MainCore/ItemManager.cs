@@ -9,18 +9,28 @@ namespace Assets.Scripts.MainCore
     {
         [SerializeField] private Item[] _items;
 
-        private Queue<Item> _queueItems = new Queue<Item>();
+        private Queue<Item> _queueBigItems = new Queue<Item>();
+        private Queue<Item> _queueSmallItems = new Queue<Item>();
         
         public event UnityAction AllDone;
 
-        public bool IsThereItems => _queueItems.Count > 0;
+        public bool IsThereItems => _queueBigItems.Count > 0 || _queueSmallItems.Count > 0;
 
         private void Start()
         {
             Shuffle(_items);
 
             foreach (var item in _items)
-                _queueItems.Enqueue(item);
+            {
+                if (item.Type == ItemType.Big)
+                {
+                    _queueBigItems.Enqueue(item);
+                }
+                else
+                {
+                    _queueSmallItems.Enqueue(item);
+                }                
+            }                
         }
 
         public Item GetNextItem()
@@ -31,7 +41,7 @@ namespace Assets.Scripts.MainCore
                 return null;
             }                
 
-            return _queueItems.Dequeue();
+            return _queueSmallItems.Count > 0 ? _queueSmallItems.Dequeue() : _queueBigItems.Dequeue();
         }
 
         private void Shuffle(Item[] array)

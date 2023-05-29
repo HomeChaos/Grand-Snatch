@@ -17,7 +17,6 @@ namespace Assets.Scripts.MainCore
             
         }
 
-        [ContextMenu("Add Minion")]
         public void AddMinion()
         {
             if (_itemManager.IsThereItems == false)

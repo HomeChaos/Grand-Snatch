@@ -6,7 +6,10 @@ namespace Assets.Scripts.MainCore
 {
     public class Item: MonoBehaviour
     {
+        [SerializeField] private ItemType _type;
+
         public event UnityAction OnItemTaken;
+        public ItemType Type => _type;
         
         public void Sell()
         {
