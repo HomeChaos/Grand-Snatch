@@ -1,9 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
-using static UnityEditor.Progress;
 
 namespace Assets.Scripts.MainCore
 {
@@ -82,9 +80,10 @@ namespace Assets.Scripts.MainCore
 
         private IEnumerator GoToCar()
         {
+            _animator.SetBool("IsCarry", true);
             _agent.isStopped = false;
             _agent.SetDestination(_carPositon);
-            _animator.SetTrigger("Carry");
+            
             var distane = Vector3.Distance(transform.position, _carPositon);
             var waitForEndOfFrame = new WaitForEndOfFrame();
 
@@ -95,6 +94,7 @@ namespace Assets.Scripts.MainCore
             }
 
             _targetItem.Sell();
+            _animator.SetBool("IsCarry", false);
             Stop();         
         }
 
