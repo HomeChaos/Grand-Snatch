@@ -11,10 +11,13 @@ namespace Assets.Scripts.MainCore
         [SerializeField] private GameObject _minionTemlate;
 
         private List<Minion> _minions = new List<Minion>();
-
-        private void Start()
+        
+        private void OnDisable()
         {
-            
+            foreach (Minion minion in _minions)
+            {
+                minion.OnSellItem -= OnBroughtItem;
+            }
         }
 
         public void AddMinion()
@@ -24,8 +27,8 @@ namespace Assets.Scripts.MainCore
 
             Minion minion = Instantiate(_minionTemlate, _car.position, Quaternion.identity, transform).GetComponent<Minion>();
             minion.Init(_car.position);
-            minion.OnBroughtItem += OnBroughtItem;
-            minion.SetNewItemPosition(_itemManager.GetNextItem());
+            minion.OnSellItem += OnBroughtItem;
+            minion.SetNewItem(_itemManager.GetNextItem());
             _minions.Add(minion);
         }
 
@@ -41,19 +44,11 @@ namespace Assets.Scripts.MainCore
         {
             if (_itemManager.IsThereItems == false)
             {
-                minion.OnBroughtItem -= OnBroughtItem;
+                minion.OnSellItem -= OnBroughtItem;
                 return;
             }                
             
-            minion.SetNewItemPosition(_itemManager.GetNextItem());
-        }
-
-        private void OnDisable()
-        {
-            foreach (Minion minion in _minions)
-            {
-                minion.OnBroughtItem -= OnBroughtItem;
-            }
+            minion.SetNewItem(_itemManager.GetNextItem());
         }
     }
 }

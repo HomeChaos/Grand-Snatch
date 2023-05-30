@@ -8,21 +8,21 @@ namespace Assets.Scripts.MainCore
     {
         [SerializeField] private ItemType _type;
 
-        public event UnityAction OnItemTaken;
+        public event UnityAction OnAnimationComplete;
         public ItemType Type => _type;
         
         public void Sell()
         {
-            Debug.Log("Меня продали :3");
+            Debug.Log("Меня продали");
             Destroy(gameObject);
         }
 
-        public void GetUp(Vector3 position)
+        public void PlayLiftingAnimation(Vector3 position)
         {
-            StartCoroutine(Pickup(position));
+            StartCoroutine(StartAnimation(position));
         }
 
-        private IEnumerator Pickup(Vector3 position)
+        private IEnumerator StartAnimation(Vector3 position)
         {
             var waitForEndOfFrame = new WaitForEndOfFrame();
 
@@ -32,7 +32,7 @@ namespace Assets.Scripts.MainCore
                 yield return waitForEndOfFrame;
             }
   
-            OnItemTaken?.Invoke();
+            OnAnimationComplete?.Invoke();
         }
     }
 }

@@ -7,24 +7,22 @@ namespace Assets.Scripts.MainCore
 {
     [RequireComponent(typeof(NavMeshAgent))]
     public class Minion : MonoBehaviour
-    {        
+    {
+        private readonly int _isCarryKey = Animator.StringToHash("IsCarry");
+        private readonly int _pickupKey = Animator.StringToHash("Pickup");
+
         [SerializeField] private float _minDistance = 2f;
         [SerializeField] private Transform _pointToObject;
         [SerializeField] private Animator _animator;
 
         private NavMeshAgent _agent;
         private Vector3 _carPositon;
-        private Vector3 _targetPositon;
         private Item _targetItem;
-
-        public event UnityAction<Minion> OnBroughtItem;
-
         private IEnumerator _currentState;
 
-        private void Start()
-        {
-            _agent = GetComponent<NavMeshAgent>();
-        }
+        private delegate void MinionAction();
+
+        public event UnityAction<Minion> OnSellItem;
 
         public void Init(Vector3 carPositon)
         {
@@ -32,12 +30,10 @@ namespace Assets.Scripts.MainCore
             _agent = GetComponent<NavMeshAgent>();
         }
 
-        public void SetNewItemPosition(Item item)
+        public void SetNewItem(Item item)
         {
             _targetItem = item;
-            _targetPositon = item.gameObject.transform.position;
-            
-            StartState(GoToItem());
+            GoToItem();            
         }
 
         public void AddSpeed()
@@ -45,57 +41,57 @@ namespace Assets.Scripts.MainCore
             _agent.speed += 1;
         }
 
-        private IEnumerator GoToItem()
+        private void GoToItem()
         {
-            _agent.SetDestination(_targetPositon);
-            _animator.SetTrigger("Runnig");
-            var distane = Vector3.Distance(transform.position, _targetPositon);            
-            var waitForEndOfFrame = new WaitForEndOfFrame();
-
-            while (distane > _minDistance || IsItemTakenAway())
-            {
-                yield return waitForEndOfFrame;
-                distane = Vector3.Distance(transform.position, _targetPositon);                
-            }
-
-            if (IsItemTakenAway())
-            {
-                Stop();
-                yield return null;
-            }
-
-            _agent.isStopped = true;
-            _targetItem.OnItemTaken += OnItemTaken;
-
-            PickupObject(_targetItem);
-            _animator.SetTrigger("Pickup");
-        }
-
-        private void OnItemTaken()
-        {
-            _targetItem.OnItemTaken -= OnItemTaken;
-            _targetItem.gameObject.transform.SetParent(transform);
-            StartState(GoToCar());
-        }
-
-        private IEnumerator GoToCar()
-        {
-            _animator.SetBool("IsCarry", true);
-            _agent.isStopped = false;
-            _agent.SetDestination(_carPositon);
+            var itemPositon = _targetItem.gameObject.transform.position;
+            MinionAction stopNearItem = StopNearItem;
             
-            var distane = Vector3.Distance(transform.position, _carPositon);
+            StartState(GoToTarget(itemPositon, stopNearItem));
+        }
+
+        private IEnumerator GoToTarget(Vector3 targetPosition, MinionAction minionAction)
+        {
+            _agent.SetDestination(targetPosition);
+
+            var distane = Vector3.Distance(transform.position, targetPosition);            
             var waitForEndOfFrame = new WaitForEndOfFrame();
 
             while (distane > _minDistance)
             {
                 yield return waitForEndOfFrame;
-                distane = Vector3.Distance(transform.position, _carPositon);
+                distane = Vector3.Distance(transform.position, targetPosition);                
             }
 
+            minionAction();
+        }
+
+        private void StopNearItem()
+        {
+            _agent.isStopped = true;
+
+            _targetItem.OnAnimationComplete += TakeItem;
+            _targetItem.PlayLiftingAnimation(_pointToObject.position);
+
+            _animator.SetTrigger(_pickupKey);
+        }
+
+        private void TakeItem()
+        {
+            _targetItem.OnAnimationComplete -= TakeItem;
+            _targetItem.gameObject.transform.SetParent(transform);
+
+            _animator.SetBool(_isCarryKey, true);
+            _agent.isStopped = false;            
+
+            MinionAction sellItem = SellItem;
+            StartState(GoToTarget(_carPositon, sellItem));
+        }
+
+        private void SellItem()
+        {
             _targetItem.Sell();
-            _animator.SetBool("IsCarry", false);
-            Stop();         
+            _animator.SetBool(_isCarryKey, false);
+            Stop();
         }
 
         private void Stop()
@@ -103,12 +99,7 @@ namespace Assets.Scripts.MainCore
             StopCoroutine(_currentState);
             _currentState = null;
 
-            OnBroughtItem?.Invoke(this);
-        }
-
-        private bool IsItemTakenAway()
-        {
-            return _targetItem == null;
+            OnSellItem?.Invoke(this);
         }
 
         private void StartState(IEnumerator coroutine)
@@ -118,11 +109,6 @@ namespace Assets.Scripts.MainCore
 
             _currentState = coroutine;
             StartCoroutine(coroutine);
-        }
-
-        private void PickupObject(Item item)
-        {            
-            item.GetUp(_pointToObject.position);
         }
     }
 }
