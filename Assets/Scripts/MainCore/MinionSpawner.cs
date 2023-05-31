@@ -1,3 +1,4 @@
+using Assets.Scripts.MainCore.MinionScripts;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,7 @@ namespace Assets.Scripts.MainCore
     public class MinionSpawner : MonoBehaviour
     {
         [SerializeField] private Transform _car;
+        [SerializeField] private MinionAccelerator _minionAccelerator;
         [SerializeField] private ItemManager _itemManager;
         [SerializeField] private GameObject _minionTemlate;
 
@@ -26,7 +28,7 @@ namespace Assets.Scripts.MainCore
                 return;
 
             Minion minion = Instantiate(_minionTemlate, _car.position, Quaternion.identity, transform).GetComponent<Minion>();
-            minion.Init(_car.position);
+            minion.Init(_car.position, _minionAccelerator);
             minion.OnSellItem += OnBroughtItem;
             minion.SetNewItem(_itemManager.GetNextItem());
             _minions.Add(minion);
@@ -34,9 +36,11 @@ namespace Assets.Scripts.MainCore
 
         public void AddSpeed()
         {
-            foreach (Minion minion in _minions)
+            MinionSpecifications.Instance.AddSpeed();
+
+            foreach (var minion in _minions)
             {
-                minion.AddSpeed();
+                minion.UpdateSpeed();
             }
         }
 

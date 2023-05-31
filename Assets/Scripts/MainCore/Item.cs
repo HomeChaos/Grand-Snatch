@@ -7,6 +7,7 @@ namespace Assets.Scripts.MainCore
     public class Item: MonoBehaviour
     {
         [SerializeField] private ItemType _type;
+        [SerializeField] private float _aminationTime = 1f;
 
         public event UnityAction OnAnimationComplete;
         public ItemType Type => _type;
@@ -28,7 +29,7 @@ namespace Assets.Scripts.MainCore
 
             while (transform.position != position) 
             {
-                transform.position = Vector3.MoveTowards(transform.position, position, 1f * Time.deltaTime);
+                transform.position = Vector3.MoveTowards(transform.position, position, _aminationTime * Time.deltaTime);
                 yield return waitForEndOfFrame;
             }
   
