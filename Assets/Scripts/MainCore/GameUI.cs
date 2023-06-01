@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts.MainCore
 {
-    public class ReloadScene: MonoBehaviour
+    public class GameUI: MonoBehaviour
     {
         public void Reload()
         {

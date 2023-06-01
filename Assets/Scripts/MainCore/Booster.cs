@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 namespace Assets.Scripts.MainCore
 {
-    public class MinionAccelerator: MonoBehaviour
+    public class Booster: MonoBehaviour
     {
         [SerializeField] private float _delayAfterClick = 0.5f;
 

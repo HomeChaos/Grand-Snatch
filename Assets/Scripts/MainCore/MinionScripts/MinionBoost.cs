@@ -10,22 +10,22 @@ namespace Assets.Scripts.MainCore.MinionScripts
         
 
         private NavMeshAgent _agent;
-        private MinionAccelerator _accelerator;
+        private Booster _booster;
         
         private Coroutine _boost;
 
         private void OnDisable()
         {
-            if (_accelerator != null)
-                _accelerator.OnClick -= EnableBoost;
+            if (_booster != null)
+                _booster.OnClick -= EnableBoost;
         }
 
-        public void Init(NavMeshAgent agent, MinionAccelerator accelerator)
+        public void Init(NavMeshAgent agent, Booster booster)
         {
             _agent = agent;
             _agent.speed = MinionSpecifications.Instance.MinSpeed;
-            _accelerator = accelerator;
-            _accelerator.OnClick += EnableBoost;            
+            _booster = booster;
+            _booster.OnClick += EnableBoost;            
         }
 
         public void UpdateSpeed()

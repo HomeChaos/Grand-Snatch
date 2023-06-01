@@ -20,14 +20,14 @@ namespace Assets.Scripts.MainCore.MinionScripts
             _minionMoving.OnSellItem -= SellItem;
         }
 
-        public void Init(Vector3 carPositon, MinionAccelerator accelerator)
+        public void Init(Vector3 carPositon, Booster booster)
         {
             var agent = GetComponent<NavMeshAgent>();
             _minionMoving = GetComponent<MinionMoving>();
             _minionBoost = GetComponent<MinionBoost>();
 
             _minionMoving.Init(agent, carPositon);
-            _minionBoost.Init(agent, accelerator);
+            _minionBoost.Init(agent, booster);
 
             _minionMoving.OnSellItem += SellItem;
         }
