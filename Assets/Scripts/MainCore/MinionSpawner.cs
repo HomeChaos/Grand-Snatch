@@ -1,3 +1,4 @@
+using System;
 using Assets.Scripts.MainCore.MinionScripts;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,6 +14,8 @@ namespace Assets.Scripts.MainCore
         [SerializeField] private GameObject _minionTemlate;
 
         private List<Minion> _minions = new List<Minion>();
+
+        public int CountOfMinions => _minions.Count;
         
         private void OnDisable()
         {
@@ -22,9 +25,15 @@ namespace Assets.Scripts.MainCore
             }
         }
 
+        private void Start()
+        {
+            float delayBeforeInitialization = 0.5f;
+            Invoke(nameof(AddMinion), delayBeforeInitialization);
+        }
+
         public void AddMinion()
         {
-            if (_itemManager.IsThereItems == false)
+            if (_itemManager.CountOfItems == 0)
                 return;
 
             Minion minion = Instantiate(_minionTemlate, _car.position, Quaternion.identity, transform).GetComponent<Minion>();
@@ -46,7 +55,7 @@ namespace Assets.Scripts.MainCore
 
         private void OnBroughtItem(Minion minion)
         {
-            if (_itemManager.IsThereItems == false)
+            if (_itemManager.CountOfItems == 0)
             {
                 minion.OnSellItem -= OnBroughtItem;
                 return;

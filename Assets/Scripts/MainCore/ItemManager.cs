@@ -11,14 +11,15 @@ namespace Assets.Scripts.MainCore
 
         private Queue<Item> _queueBigItems = new Queue<Item>();
         private Queue<Item> _queueSmallItems = new Queue<Item>();
+        private int _maxCountOfItems;
         
         public event UnityAction AllDone;
+        
+        public int CountOfItems => _queueBigItems.Count + _queueSmallItems.Count;
 
-        public bool IsThereItems => _queueBigItems.Count > 0 || _queueSmallItems.Count > 0;
-
-        private void Start()
+        private void Awake()
         {
-            Shuffle(_items);
+            Shuffle(_items);             
 
             foreach (var item in _items)
             {
@@ -30,12 +31,12 @@ namespace Assets.Scripts.MainCore
                 {
                     _queueSmallItems.Enqueue(item);
                 }                
-            }                
+            }
         }
 
         public Item GetNextItem()
         {
-            if (IsThereItems == false)
+            if (CountOfItems == 0)
             {
                 AllDone?.Invoke();
                 return null;

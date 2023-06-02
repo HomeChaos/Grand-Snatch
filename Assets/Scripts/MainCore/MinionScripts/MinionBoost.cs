@@ -7,7 +7,6 @@ namespace Assets.Scripts.MainCore.MinionScripts
     public class MinionBoost: MonoBehaviour
     {
         [SerializeField] private float _boostTime = 1f;
-        
 
         private NavMeshAgent _agent;
         private Booster _booster;

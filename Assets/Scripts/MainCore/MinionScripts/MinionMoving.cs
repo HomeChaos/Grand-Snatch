@@ -5,7 +5,6 @@ using UnityEngine.Events;
 
 namespace Assets.Scripts.MainCore.MinionScripts
 {
-    
     public class MinionMoving : MonoBehaviour
     {
         private readonly int _isCarryKey = Animator.StringToHash("IsCarry");

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Assets.Scripts.Data;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -14,7 +15,7 @@ namespace Assets.Scripts.MainCore
         
         public void Sell()
         {
-            Debug.Log("Меня продали");
+            PaymentSystem.Instance.SellItem();
             Destroy(gameObject);
         }
 
