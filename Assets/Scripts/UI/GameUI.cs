@@ -10,7 +10,8 @@ namespace Assets.Scripts.UI
     {
         [SerializeField] private PaymentSystem _paymentSystem;
         [SerializeField] private TMP_Text _money;
-        [SerializeField] private Slider _slider;
+        [SerializeField] private Slider _levelInfoSlider;
+        [SerializeField] private TMP_Text _levelInfoText;
         [SerializeField] private GameObject _gameOver;
 
         private void OnEnable()
@@ -30,8 +31,7 @@ namespace Assets.Scripts.UI
 
         public void Reload()
         {
-            var scene = SceneManager.GetActiveScene();
-            SceneManager.LoadScene(scene.name);
+            IJunior.TypedScenes.MainMenu.Load();
         }
 
         private void UpdateMoney(int money)
@@ -44,7 +44,8 @@ namespace Assets.Scripts.UI
 
         private void OnItemSold(int maxValue, int newValue)
         {
-            _slider.value = (float) newValue / maxValue;
+            _levelInfoSlider.value = (float) newValue / maxValue;
+            _levelInfoText.text = $"{newValue}/{maxValue}";
         }
 
         private void ShowGameOverWindow()

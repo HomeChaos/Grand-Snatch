@@ -52,6 +52,11 @@ namespace Assets.Scripts.Data
 
         private void Start()
         {
+            Invoke(nameof(InitNewValues), 0.1f);
+        }
+
+        private void InitNewValues()
+        {
             _money = PlayerData.Instance.Money;
             OnMoneyChanged?.Invoke(_money);
             

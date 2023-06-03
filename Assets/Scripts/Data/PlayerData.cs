@@ -30,7 +30,7 @@ namespace Assets.Scripts.Data
 
         private void LoadData()
         {
-            _money = int.MaxValue;
+            _money = 100;
             _level = 1;
 
             _isMusicOn = true;
