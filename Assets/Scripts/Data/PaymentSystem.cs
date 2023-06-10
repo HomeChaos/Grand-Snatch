@@ -16,10 +16,9 @@ namespace Assets.Scripts.Data
         [SerializeField] private GameSession _gameSession;
         [SerializeField] private ProductItem _addMinion;
         [SerializeField] private ProductItem _addSpeed;
-        [SerializeField] private ProductItem _updateCostItem;
-
-        private int _money;
-        private int _countOfMonion;
+        [SerializeField] private ProductItem _income;
+        
+        private int _countOfMinion;
         private int _minionSpeed;
         private int _costOfItem;
 
@@ -40,29 +39,28 @@ namespace Assets.Scripts.Data
         {
             _addMinion.Button.onClick.AddListener(AddMinion);
             _addSpeed.Button.onClick.AddListener(AddSpeed);
-            _updateCostItem.Button.onClick.AddListener(UpdateCost);
+            _income.Button.onClick.AddListener(UpdateCost);
         }
 
         private void OnDisable()
         {
             _addMinion.Button.onClick.RemoveListener(AddMinion);
             _addSpeed.Button.onClick.RemoveListener(AddSpeed);
-            _updateCostItem.Button.onClick.RemoveListener(UpdateCost);
+            _income.Button.onClick.RemoveListener(UpdateCost);
         }
 
         private void Start()
         {
-            Invoke(nameof(InitNewValues), 0.1f);
+            Invoke(nameof(InitNewValues), 0.4f);
         }
 
         private void InitNewValues()
         {
-            _money = PlayerData.Instance.Money;
-            OnMoneyChanged?.Invoke(_money);
+            OnMoneyChanged?.Invoke(PlayerData.Instance.Money);
             
             _addMinion.Product.SetValues(1, _gameSession.MinionCost);
             _addSpeed.Product.SetValues(_gameSession.MinionSpeedLevel, _gameSession.SpeedCost);
-            _updateCostItem.Product.SetValues(_gameSession.ItemCostLevel, _gameSession.CostOfUpdateItem);
+            _income.Product.SetValues(_gameSession.IncomeLevel, _gameSession.CostOfUpdateItem);
 
             _maxCountOfItems = _itemManager.CountOfItems;
             ItemSold?.Invoke(_maxCountOfItems, _countSoldItems);
@@ -71,14 +69,14 @@ namespace Assets.Scripts.Data
         public void SellItem()
         {
             int spread = Random.Range(PlayerData.Instance.Config.MinMoneyRange, PlayerData.Instance.Config.MaxMoneyRange + 2);
-            int newValueOfMoney = _money + _gameSession.CostOfSaleItem + spread;
+            int newValueOfMoney = PlayerData.Instance.Money + _gameSession.CostOfSaleItem + spread;
             
             if (newValueOfMoney < 0)
-                _money = int.MaxValue;
+                PlayerData.Instance.Money = int.MaxValue;
             else
-                _money = newValueOfMoney;
+                PlayerData.Instance.Money = newValueOfMoney;
             
-            OnMoneyChanged?.Invoke(_money);
+            OnMoneyChanged?.Invoke(PlayerData.Instance.Money);
             ItemSold?.Invoke(_maxCountOfItems, ++_countSoldItems);
             
             if (_maxCountOfItems == _countSoldItems)
@@ -87,12 +85,12 @@ namespace Assets.Scripts.Data
 
         private bool TryPay(int payment)
         {
-            if (_money - payment < 0.01f)
+            if (PlayerData.Instance.Money - payment < 0.01f)
                 return false;
             
-            _money -= payment;
+            PlayerData.Instance.Money -= payment;
 
-            OnMoneyChanged?.Invoke(_money);
+            OnMoneyChanged?.Invoke(PlayerData.Instance.Money);
             return true;
         }
 
@@ -125,7 +123,7 @@ namespace Assets.Scripts.Data
             if (TryPay(_gameSession.CostOfUpdateItem))
             {
                 _gameSession.UpdateItemCost();
-                _updateCostItem.Product.SetValues(_gameSession.ItemCostLevel, _gameSession.CostOfUpdateItem);
+                _income.Product.SetValues(_gameSession.IncomeLevel, _gameSession.CostOfUpdateItem);
             }
         }
     }

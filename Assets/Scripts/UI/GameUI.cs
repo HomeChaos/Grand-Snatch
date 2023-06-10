@@ -37,7 +37,7 @@ namespace Assets.Scripts.UI
         private void UpdateMoney(int money)
         {
             if (money >= int.MaxValue)
-                _money.text = "MAX MONEY $";
+                _money.text = "MAX $";
             else
                 _money.text = $"{NumberSeparator.SplitNumber(money)} $";
         }        

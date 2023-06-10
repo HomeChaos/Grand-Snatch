@@ -1,6 +1,4 @@
-﻿using System;
-using Assets.Scripts.MainCore;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Assets.Scripts.Data
 {
@@ -15,14 +13,14 @@ namespace Assets.Scripts.Data
         private int _minionSpeedLevel;
 
         private int _costOfUpdateItem;
-        private int _itemCostLevel = 1;
+        private int _incomeLevel = 1;
 
         public int MinionCost => _minionCost;
         public int SpeedCost => _speedCost;
         public int MinionSpeedLevel => _minionSpeedLevel;
-        public int CostOfSaleItem => _itemCostLevel * PlayerData.Instance.Config.RatioOfMoneyToLevel;
+        public int CostOfSaleItem => _incomeLevel * PlayerData.Instance.Config.RatioOfMoneyToLevel;
         public int CostOfUpdateItem => _costOfUpdateItem;
-        public int ItemCostLevel => _itemCostLevel;
+        public int IncomeLevel => _incomeLevel;
 
         private void Awake()
         {
@@ -51,8 +49,8 @@ namespace Assets.Scripts.Data
 
         public void UpdateItemCost()
         {
-            _costOfUpdateItem += (int) (Mathf.Pow(2, _itemCostLevel) * (int) (PlayerData.Instance.Level * PlayerData.Instance.Config.FactorItemCost));
-            _itemCostLevel++;
+            _costOfUpdateItem += (int) (Mathf.Pow(2, _incomeLevel) * (int) (PlayerData.Instance.Level * PlayerData.Instance.Config.FactorItemCost));
+            _incomeLevel++;
         }
     }
 }

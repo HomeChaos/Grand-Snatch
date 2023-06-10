@@ -1,4 +1,5 @@
-﻿using IJunior.TypedScenes;
+﻿using Assets.Scripts.Data;
+using IJunior.TypedScenes;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,6 +21,7 @@ namespace Assets.Scripts.UI
 
         private void LoadNextLevel()
         {
+            PlayerData.Instance.SaveData();
             Level_1.Load();
         }
     }
