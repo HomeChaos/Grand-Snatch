@@ -1,37 +1,41 @@
-﻿using Assets.Scripts.Data;
+﻿using System;
+using Assets.Scripts.Data;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.UI
 {
+    [Serializable]
     public class GameUI: MonoBehaviour
     {
-        [SerializeField] private PaymentSystem _paymentSystem;
         [SerializeField] private TMP_Text _money;
         [SerializeField] private Slider _levelInfoSlider;
         [SerializeField] private TMP_Text _levelInfoText;
+        [SerializeField] private TMP_Text _levelNumber;
         [SerializeField] private GameObject _gameOver;
+        
+        private PaymentSystem _paymentSystem;
 
-        private void OnEnable()
+        public void Init(PaymentSystem paymentSystem)
         {
             _gameOver.SetActive(false);
-            _paymentSystem.OnMoneyChanged += UpdateMoney;
+            
+            _paymentSystem = paymentSystem;
             _paymentSystem.ItemSold += OnItemSold;
             _paymentSystem.AllItemsSold += ShowGameOverWindow;
+            OnItemSold(_paymentSystem.MaxCountOfItems, 0);
+
+            PlayerData.Instance.MoneyChanged += UpdateMoney;
+            UpdateMoney(PlayerData.Instance.Money);
+            _levelNumber.text = PlayerData.Instance.Level.ToString();
         }
 
         private void OnDisable()
         {
-            _paymentSystem.OnMoneyChanged -= UpdateMoney;
+            PlayerData.Instance.MoneyChanged -= UpdateMoney;
             _paymentSystem.ItemSold -= OnItemSold;
             _paymentSystem.AllItemsSold -= ShowGameOverWindow;
-        }
-
-        public void Reload()
-        {
-            IJunior.TypedScenes.MainMenu.Load();
         }
 
         private void UpdateMoney(int money)

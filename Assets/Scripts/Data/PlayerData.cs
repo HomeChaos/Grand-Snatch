@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace Assets.Scripts.Data
 {
-    public class PlayerData: MonoBehaviour
+    [Serializable]
+    public class PlayerData : IDisposable
     {
         private const string MoneyKey = "Money";
         private const string LevelKey = "Level";
@@ -39,6 +41,7 @@ namespace Assets.Scripts.Data
                     throw new RankException("Incorrect value of money");
 
                 _money = value;
+                MoneyChanged?.Invoke(_money);
             }
         }
 
@@ -71,15 +74,23 @@ namespace Assets.Scripts.Data
             }
         }
 
-        public event UnityAction<bool> MusicStatusChange;
-        public event UnityAction<bool> SFXStatusChange; 
+        public bool IsDataLoaded { get; private set; } = false;
 
-        private void Awake()
+        public event UnityAction<bool> MusicStatusChange;
+        public event UnityAction<bool> SFXStatusChange;
+        public event UnityAction<int> MoneyChanged; 
+
+        public void Init()
         {
             if (Instance == null)
                 Instance = this;
-
+            
             LoadData();
+        }
+
+        public void Dispose()
+        {
+            SaveData();
         }
 
         public void SaveData()
@@ -95,14 +106,16 @@ namespace Assets.Scripts.Data
         private void LoadData()
         {
             _money = PlayerPrefs.HasKey(MoneyKey) ? PlayerPrefs.GetInt(MoneyKey) : MoneyDefault;
+            _money = 100000;
             _level = PlayerPrefs.HasKey(LevelKey) ? PlayerPrefs.GetInt(LevelKey) : LevelDefault;
             _isMusicOn = PlayerPrefs.HasKey(MusicKey) ? Convert.ToBoolean(PlayerPrefs.GetInt(MusicKey)) : MusicDefault;
             _isSFXOn = PlayerPrefs.HasKey(SFXKey) ? Convert.ToBoolean(PlayerPrefs.GetInt(SFXKey)) : SFXDefault;
+
+            IsDataLoaded = true;
         }
 
 #if UNITY_EDITOR
-        [ContextMenu("Reset Data")]
-        private void ResetData()
+        public void ResetData()
         {
             _money = MoneyDefault;
             _level = LevelDefault;

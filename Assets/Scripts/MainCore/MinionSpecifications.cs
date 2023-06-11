@@ -1,12 +1,10 @@
-﻿using Assets.Scripts.Data;
-using UnityEngine;
+﻿using System;
+using Assets.Scripts.Data;
 
 namespace Assets.Scripts.MainCore
 {
-    public class MinionSpecifications : MonoBehaviour
+    public class MinionSpecifications : IDisposable
     {
-        public static MinionSpecifications Instance { get; private set; }
-
         private const int RatioOfSpeedToLevel = 5;
         
         private float _minSpeed;
@@ -15,15 +13,9 @@ namespace Assets.Scripts.MainCore
         public float MinSpeed => _minSpeed;
         public float MaxSpeed => _maxSpeed;
 
-        public void Awake()
+        public MinionSpecifications(int startSpeed)
         {
-            if (Instance == null)
-                Instance = this;
-        }
-
-        private void Start()
-        {
-            var minionSpeed = GameSession.Instance.MinionSpeedLevel + RatioOfSpeedToLevel;
+            var minionSpeed = startSpeed + RatioOfSpeedToLevel;
             _minSpeed = minionSpeed - PlayerData.Instance.Config.MinionSpeedRange;
             _maxSpeed = minionSpeed + PlayerData.Instance.Config.MinionSpeedRange;
         }
@@ -32,6 +24,11 @@ namespace Assets.Scripts.MainCore
         {
             _minSpeed += PlayerData.Instance.Config.SpeedDelta;
             _maxSpeed += PlayerData.Instance.Config.SpeedDelta;
+        }
+
+        public void Dispose()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -25,12 +25,6 @@ namespace Assets.Scripts.MainCore
             }
         }
 
-        private void Start()
-        {
-            float delayBeforeInitialization = 0.5f;
-            Invoke(nameof(AddMinion), delayBeforeInitialization);
-        }
-
         public void AddMinion()
         {
             if (_itemManager.CountOfItems == 0)
@@ -45,8 +39,6 @@ namespace Assets.Scripts.MainCore
 
         public void AddSpeed()
         {
-            MinionSpecifications.Instance.AddSpeed();
-
             foreach (var minion in _minions)
             {
                 minion.UpdateSpeed();

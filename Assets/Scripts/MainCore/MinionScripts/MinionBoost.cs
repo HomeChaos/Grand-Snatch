@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Assets.Scripts.Data;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -22,14 +23,14 @@ namespace Assets.Scripts.MainCore.MinionScripts
         public void Init(NavMeshAgent agent, Booster booster)
         {
             _agent = agent;
-            _agent.speed = MinionSpecifications.Instance.MinSpeed;
+            _agent.speed = GameSession.Instance.MinionSpecifications.MinSpeed;
             _booster = booster;
             _booster.OnClick += EnableBoost;            
         }
 
         public void UpdateSpeed()
         {
-            _agent.speed = MinionSpecifications.Instance.MinSpeed;
+            _agent.speed = GameSession.Instance.MinionSpecifications.MinSpeed;
         }
 
         private void EnableBoost()
@@ -42,9 +43,9 @@ namespace Assets.Scripts.MainCore.MinionScripts
 
         private IEnumerator ProduceBoost()
         {
-            _agent.speed = MinionSpecifications.Instance.MaxSpeed;
+            _agent.speed = GameSession.Instance.MinionSpecifications.MaxSpeed;
             yield return new WaitForSeconds(_boostTime);
-            _agent.speed = MinionSpecifications.Instance.MinSpeed;
+            _agent.speed = GameSession.Instance.MinionSpecifications.MinSpeed;
             _boost = null;
         }
     }

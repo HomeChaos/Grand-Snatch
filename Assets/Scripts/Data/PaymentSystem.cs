@@ -13,57 +13,37 @@ namespace Assets.Scripts.Data
         
         [SerializeField] private MinionSpawner _minionSpawner;
         [SerializeField] private ItemManager _itemManager;
-        [SerializeField] private GameSession _gameSession;
         [SerializeField] private ProductItem _addMinion;
         [SerializeField] private ProductItem _addSpeed;
         [SerializeField] private ProductItem _income;
+
+        private GameSession _gameSession;
         
-        private int _countOfMinion;
-        private int _minionSpeed;
-        private int _costOfItem;
-
-        private int _maxCountOfItems;
         private int _countSoldItems;
-
-        public event UnityAction<int> OnMoneyChanged;
+        
+        public int MaxCountOfItems => _itemManager.MaxCountOfItems;
+        
         public event UnityAction<int, int> ItemSold;
         public event UnityAction AllItemsSold;
 
-        private void Awake()
+        public void Init(GameSession gameSession)
         {
             if (Instance == null)
                 Instance = this;
-        }
 
-        private void OnEnable()
-        {
+            _gameSession = gameSession;
             _addMinion.Button.onClick.AddListener(AddMinion);
             _addSpeed.Button.onClick.AddListener(AddSpeed);
-            _income.Button.onClick.AddListener(UpdateCost);
+            _income.Button.onClick.AddListener(AddIncome);
+
+            InitValueForBuy();
         }
 
         private void OnDisable()
         {
             _addMinion.Button.onClick.RemoveListener(AddMinion);
             _addSpeed.Button.onClick.RemoveListener(AddSpeed);
-            _income.Button.onClick.RemoveListener(UpdateCost);
-        }
-
-        private void Start()
-        {
-            Invoke(nameof(InitNewValues), 0.4f);
-        }
-
-        private void InitNewValues()
-        {
-            OnMoneyChanged?.Invoke(PlayerData.Instance.Money);
-            
-            _addMinion.Product.SetValues(1, _gameSession.MinionCost);
-            _addSpeed.Product.SetValues(_gameSession.MinionSpeedLevel, _gameSession.SpeedCost);
-            _income.Product.SetValues(_gameSession.IncomeLevel, _gameSession.CostOfUpdateItem);
-
-            _maxCountOfItems = _itemManager.CountOfItems;
-            ItemSold?.Invoke(_maxCountOfItems, _countSoldItems);
+            _income.Button.onClick.RemoveListener(AddIncome);
         }
 
         public void SellItem()
@@ -75,12 +55,18 @@ namespace Assets.Scripts.Data
                 PlayerData.Instance.Money = int.MaxValue;
             else
                 PlayerData.Instance.Money = newValueOfMoney;
+
+            ItemSold?.Invoke(_itemManager.MaxCountOfItems, ++_countSoldItems);
             
-            OnMoneyChanged?.Invoke(PlayerData.Instance.Money);
-            ItemSold?.Invoke(_maxCountOfItems, ++_countSoldItems);
-            
-            if (_maxCountOfItems == _countSoldItems)
+            if (_itemManager.MaxCountOfItems == _countSoldItems)
                 AllItemsSold?.Invoke();
+        }
+
+        private void InitValueForBuy()
+        {
+            _addMinion.Product.SetValues(1, _gameSession.MinionCost);
+            _addSpeed.Product.SetValues(_gameSession.MinionSpeedLevel, _gameSession.SpeedCost);
+            _income.Product.SetValues(_gameSession.IncomeLevel, _gameSession.CostOfUpdateItem);
         }
 
         private bool TryPay(int payment)
@@ -89,18 +75,16 @@ namespace Assets.Scripts.Data
                 return false;
             
             PlayerData.Instance.Money -= payment;
-
-            OnMoneyChanged?.Invoke(PlayerData.Instance.Money);
             return true;
         }
 
         private void AddMinion()
         {
-            bool conditionForTheUpdate = _itemManager.CountOfItems > 0 &&
+            bool conditionForUpdate = _itemManager.CountOfItems > 0 &&
                                          _minionSpawner.CountOfMinions < PlayerData.Instance.Config.MaxCountOfMinions &&
                                          TryPay(_gameSession.MinionCost);
             
-            if (conditionForTheUpdate)
+            if (conditionForUpdate)
             {
                 _minionSpawner.AddMinion();
                 _gameSession.UpdateMinionCost();
@@ -112,13 +96,14 @@ namespace Assets.Scripts.Data
         {
             if (TryPay(_gameSession.SpeedCost))
             {
-                _minionSpawner.AddSpeed();
+                _gameSession.MinionSpecifications.AddSpeed();
                 _gameSession.UpdateSpeedCost();
+                _minionSpawner.AddSpeed();
                 _addSpeed.Product.SetValues(_gameSession.MinionSpeedLevel, _gameSession.SpeedCost);
             }
         }
 
-        private void UpdateCost()
+        private void AddIncome()
         {
             if (TryPay(_gameSession.CostOfUpdateItem))
             {

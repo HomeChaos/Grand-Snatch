@@ -17,9 +17,13 @@ namespace Assets.Scripts.MainCore
         
         public int CountOfItems => _queueBigItems.Count + _queueSmallItems.Count;
 
-        private void Awake()
+        public int MaxCountOfItems => _maxCountOfItems;
+
+        public void Init()
         {
-            Shuffle(_items);             
+            Shuffle(_items);
+
+            _maxCountOfItems = _items.Length;
 
             foreach (var item in _items)
             {

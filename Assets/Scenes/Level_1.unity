@@ -1107,7 +1107,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &262997776
 GameObject:
@@ -3331,7 +3331,7 @@ Transform:
   m_Children:
   - {fileID: 1385785603}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &722492541
 GameObject:
@@ -3840,7 +3840,6 @@ GameObject:
   - component: {fileID: 776593738}
   - component: {fileID: 776593737}
   - component: {fileID: 776593736}
-  - component: {fileID: 776593740}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -3929,30 +3928,13 @@ RectTransform:
   - {fileID: 1828310411}
   - {fileID: 9832819}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &776593740
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 776593735}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e02d09e3fc250e048a4786fa1a909683, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _paymentSystem: {fileID: 1528058063}
-  _money: {fileID: 4014115898230504607}
-  _levelInfoSlider: {fileID: 7206733565735148977}
-  _levelInfoText: {fileID: 7206733564887838001}
-  _gameOver: {fileID: 577911627}
 --- !u!1 &794278074
 GameObject:
   m_ObjectHideFlags: 0
@@ -4125,7 +4107,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &878064013
 PrefabInstance:
@@ -4671,7 +4653,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 30, y: 120, z: 0}
 --- !u!114 &963194229
 MonoBehaviour:
@@ -6056,7 +6038,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1440375337
 MonoBehaviour:
@@ -6333,40 +6315,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1528058064}
-  - component: {fileID: 1528058063}
-  - component: {fileID: 1528058066}
   - component: {fileID: 1528058065}
   m_Layer: 0
-  m_Name: PaymentSystem
+  m_Name: GameStart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1528058063
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1528058062}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c361f711b2558f846904f3f7ecd0f62c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _minionSpawner: {fileID: 2015600545}
-  _itemManager: {fileID: 230726495}
-  _gameSession: {fileID: 1528058065}
-  _addMinion:
-    _button: {fileID: 7019244178263988769}
-    _product: {fileID: 7019244178263988768}
-  _addSpeed:
-    _button: {fileID: 722492546}
-    _product: {fileID: 722492543}
-  _income:
-    _button: {fileID: 262997781}
-    _product: {fileID: 262997778}
 --- !u!4 &1528058064
 Transform:
   m_ObjectHideFlags: 0
@@ -6380,7 +6336,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1528058065
 MonoBehaviour:
@@ -6391,26 +6347,33 @@ MonoBehaviour:
   m_GameObject: {fileID: 1528058062}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7e7a473465e1af49a48615ecf96eb86, type: 3}
+  m_Script: {fileID: 11500000, guid: c81bd2cf76784633bc9106253ecd75ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1528058066
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1528058062}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd56be6485c844349ae70b8dc0a16940, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _money: 100
-  _level: 7
-  _isMusicOn: 1
-  _isSFXOn: 1
-  _config: {fileID: 11400000, guid: 8302a2761ef2bcb4ab9625e0fc906ee5, type: 2}
+  _playerData:
+    _money: 0
+    _level: 0
+    _isMusicOn: 0
+    _isSFXOn: 0
+    _config: {fileID: 11400000, guid: 8302a2761ef2bcb4ab9625e0fc906ee5, type: 2}
+  _paymentSystem:
+    _minionSpawner: {fileID: 2015600545}
+    _itemManager: {fileID: 230726495}
+    _addMinion:
+      _button: {fileID: 7019244178263988769}
+      _product: {fileID: 7019244178263988768}
+    _addSpeed:
+      _button: {fileID: 722492546}
+      _product: {fileID: 722492543}
+    _income:
+      _button: {fileID: 262997781}
+      _product: {fileID: 262997778}
+  _gameUi:
+    _money: {fileID: 4014115898230504607}
+    _levelInfoSlider: {fileID: 7206733565735148977}
+    _levelInfoText: {fileID: 7206733564887838001}
+    _levelNumber: {fileID: 7206733566172929646}
+    _gameOver: {fileID: 577911627}
 --- !u!1 &1623923052
 GameObject:
   m_ObjectHideFlags: 0
@@ -6933,7 +6896,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1545846409929613936, guid: 8666c26da2bc21a4aa6dba8bc93bac77, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1545846409929613936, guid: 8666c26da2bc21a4aa6dba8bc93bac77, type: 3}
       propertyPath: m_LocalPosition.x
@@ -7168,7 +7131,7 @@ Transform:
   - {fileID: 8065373543936475060}
   - {fileID: 567062659}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1809310994
 GameObject:
@@ -8322,7 +8285,6 @@ GameObject:
   - component: {fileID: 2015600546}
   - component: {fileID: 2015600545}
   - component: {fileID: 2015600548}
-  - component: {fileID: 2015600547}
   m_Layer: 0
   m_Name: MinionSpawner
   m_TagString: Untagged
@@ -8359,20 +8321,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2015600547
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2015600544}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8305c05f673df93429779ee846bb12c8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2015600548
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8720,7 +8670,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &55101718673655581
 GameObject:
@@ -9718,7 +9668,7 @@ Transform:
   - {fileID: 903938294}
   - {fileID: 1709105713}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &3441535215626642246 stripped
 Transform:
