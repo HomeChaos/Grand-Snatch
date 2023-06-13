@@ -1,6 +1,4 @@
-using System;
 using Assets.Scripts.MainCore.MinionScripts;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -49,11 +47,19 @@ namespace Assets.Scripts.MainCore
         {
             if (_itemManager.CountOfItems == 0)
             {
-                minion.OnSellItem -= OnBroughtItem;
-                return;
-            }                
-            
-            minion.SetNewItem(_itemManager.GetNextItem());
+                DestroyMinion(minion);
+            }
+            else
+            {
+                minion.SetNewItem(_itemManager.GetNextItem());
+            }
+        }
+
+        private void DestroyMinion(Minion minion)
+        {
+            minion.OnSellItem -= OnBroughtItem;
+            _minions.Remove(minion);
+            Destroy(minion.gameObject);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.MainCore;
 using System;
+using Assets.Scripts.UI;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -7,6 +8,7 @@ using Random = UnityEngine.Random;
 
 namespace Assets.Scripts.Data
 {
+    [RequireComponent(typeof(PaymentInformant))]
     public class PaymentSystem : MonoBehaviour
     {
         public static PaymentSystem Instance { get; private set; }
@@ -18,6 +20,7 @@ namespace Assets.Scripts.Data
         [SerializeField] private ProductItem _income;
 
         private GameSession _gameSession;
+        private PaymentInformant _informant;
         
         private int _countSoldItems;
         
@@ -31,6 +34,7 @@ namespace Assets.Scripts.Data
             if (Instance == null)
                 Instance = this;
 
+            _informant = GetComponent<PaymentInformant>();
             _gameSession = gameSession;
             _addMinion.Button.onClick.AddListener(AddMinion);
             _addSpeed.Button.onClick.AddListener(AddSpeed);
@@ -80,15 +84,25 @@ namespace Assets.Scripts.Data
 
         private void AddMinion()
         {
-            bool conditionForUpdate = _itemManager.CountOfItems > 0 &&
-                                         _minionSpawner.CountOfMinions < PlayerData.Instance.Config.MaxCountOfMinions &&
-                                         TryPay(_gameSession.MinionCost);
-            
-            if (conditionForUpdate)
+            bool isTherePlaceForMinions = _itemManager.CountOfItems > 0 &&
+                                    _minionSpawner.CountOfMinions < PlayerData.Instance.Config.MaxCountOfMinions;
+
+            if (isTherePlaceForMinions)
             {
-                _minionSpawner.AddMinion();
-                _gameSession.UpdateMinionCost();
-                _addMinion.Product.SetValues(_minionSpawner.CountOfMinions, _gameSession.MinionCost);
+                if (TryPay(_gameSession.MinionCost))
+                {
+                    _minionSpawner.AddMinion();
+                    _gameSession.UpdateMinionCost();
+                    _addMinion.Product.SetValues(_minionSpawner.CountOfMinions, _gameSession.MinionCost);
+                }
+                else
+                {
+                    _informant.NotEnoughMoney(LackOfMoney.Minions);
+                }
+            }
+            else
+            {
+                _informant.OverflowMinions();
             }
         }
 
@@ -101,6 +115,10 @@ namespace Assets.Scripts.Data
                 _minionSpawner.AddSpeed();
                 _addSpeed.Product.SetValues(_gameSession.MinionSpeedLevel, _gameSession.SpeedCost);
             }
+            else
+            {
+                _informant.NotEnoughMoney(LackOfMoney.Speed);
+            }
         }
 
         private void AddIncome()
@@ -109,6 +127,10 @@ namespace Assets.Scripts.Data
             {
                 _gameSession.UpdateItemCost();
                 _income.Product.SetValues(_gameSession.IncomeLevel, _gameSession.CostOfUpdateItem);
+            }
+            else
+            {
+                _informant.NotEnoughMoney(LackOfMoney.Income);
             }
         }
     }

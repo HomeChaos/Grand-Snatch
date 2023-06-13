@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections;
+using UI.Localization;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -12,6 +12,7 @@ namespace Assets.Scripts.Data
         private const string LevelKey = "Level";
         private const string MusicKey = "Music";
         private const string SFXKey = "SFX";
+        private const string LocalizationKey = "Localization";
         
         private const int MoneyDefault = 100;
         private const int LevelDefault = 7;
@@ -25,6 +26,7 @@ namespace Assets.Scripts.Data
         [Space]
         [SerializeField] private bool _isMusicOn;
         [SerializeField] private bool _isSFXOn;
+        [SerializeField] private string _currentLocalization;
         [SerializeField] private Config _config;
 
         public Config Config => _config;
@@ -74,11 +76,25 @@ namespace Assets.Scripts.Data
             }
         }
 
+        public string CurrentLocalization
+        {
+            get
+            {
+                return _currentLocalization;
+            }
+            set
+            {
+                _currentLocalization = value;
+                LanguageChange?.Invoke(_currentLocalization);
+            }
+        }
+
         public bool IsDataLoaded { get; private set; } = false;
 
         public event UnityAction<bool> MusicStatusChange;
         public event UnityAction<bool> SFXStatusChange;
-        public event UnityAction<int> MoneyChanged; 
+        public event UnityAction<int> MoneyChanged;
+        public event UnityAction<string> LanguageChange; 
 
         public void Init()
         {
@@ -99,6 +115,7 @@ namespace Assets.Scripts.Data
             PlayerPrefs.SetInt(LevelKey, _level);
             PlayerPrefs.SetInt(MusicKey, Convert.ToInt32(_isMusicOn));
             PlayerPrefs.SetInt(SFXKey, Convert.ToInt32(_isSFXOn));
+            PlayerPrefs.SetString(LocalizationKey, _currentLocalization);
 
             PlayerPrefs.Save();
         }
@@ -106,10 +123,12 @@ namespace Assets.Scripts.Data
         private void LoadData()
         {
             _money = PlayerPrefs.HasKey(MoneyKey) ? PlayerPrefs.GetInt(MoneyKey) : MoneyDefault;
-            _money = 100000;
+            _money = 10000000;
             _level = PlayerPrefs.HasKey(LevelKey) ? PlayerPrefs.GetInt(LevelKey) : LevelDefault;
+            _level = 1;
             _isMusicOn = PlayerPrefs.HasKey(MusicKey) ? Convert.ToBoolean(PlayerPrefs.GetInt(MusicKey)) : MusicDefault;
             _isSFXOn = PlayerPrefs.HasKey(SFXKey) ? Convert.ToBoolean(PlayerPrefs.GetInt(SFXKey)) : SFXDefault;
+            _currentLocalization = PlayerPrefs.HasKey(LocalizationKey) ? PlayerPrefs.GetString(LocalizationKey) : Language.ENG;
 
             IsDataLoaded = true;
         }

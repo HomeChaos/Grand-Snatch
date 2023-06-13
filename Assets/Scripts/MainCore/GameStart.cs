@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using Assets.Scripts.Data;
 using Assets.Scripts.UI;
+using UI.Localization;
 using UnityEngine;
 
 namespace Assets.Scripts.MainCore
@@ -11,6 +13,7 @@ namespace Assets.Scripts.MainCore
         [SerializeField] private GameSession _gameSession;
         [SerializeField] private PaymentSystem _paymentSystem;
         [SerializeField] private GameUI _gameUi;
+        [SerializeField] private Localizer _localizer;
         [SerializeField] private MinionSpawner _minionSpawner;
         [SerializeField] private ItemManager _itemManager;
 
@@ -18,6 +21,11 @@ namespace Assets.Scripts.MainCore
         {
             _playerData.Init();
             StartCoroutine(WaitForLoadPlayerData());
+        }
+
+        private void OnDestroy()
+        {
+            _playerData.SaveData();
         }
 
         private IEnumerator WaitForLoadPlayerData()
@@ -38,6 +46,7 @@ namespace Assets.Scripts.MainCore
             _itemManager.Init();
             _paymentSystem.Init(_gameSession);
             _gameUi.Init(_paymentSystem);
+            _localizer.Init();
             Invoke(nameof(StartSpawn), 1f);
         }
 

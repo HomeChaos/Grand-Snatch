@@ -51,13 +51,11 @@ namespace Assets.Scripts.UI
 
         private void OnMusicStateChange(bool state)
         {
-            Debug.Log($"Music: {state}");
             PlayerData.Instance.IsMusicOn = state;
         }
 
         private void OnSFXStateChange(bool state)
         {
-            Debug.Log($"SFX: {state}");
             PlayerData.Instance.IsSFXOn = state;
         }
     }
