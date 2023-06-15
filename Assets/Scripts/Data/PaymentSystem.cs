@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.MainCore;
 using System;
+using Assets.Scripts.Sounds;
 using Assets.Scripts.UI;
 using UnityEngine;
 using UnityEngine.Events;
@@ -61,6 +62,7 @@ namespace Assets.Scripts.Data
                 PlayerData.Instance.Money = newValueOfMoney;
 
             ItemSold?.Invoke(_itemManager.MaxCountOfItems, ++_countSoldItems);
+            Sound.Instance.PlaySFX(CollectionOfSounds.Coin);
             
             if (_itemManager.MaxCountOfItems == _countSoldItems)
                 AllItemsSold?.Invoke();

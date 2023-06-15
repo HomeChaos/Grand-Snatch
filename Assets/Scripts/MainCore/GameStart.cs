@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using Assets.Scripts.Data;
+using Assets.Scripts.Sounds;
 using Assets.Scripts.UI;
 using UI.Localization;
 using UnityEngine;
@@ -13,6 +13,7 @@ namespace Assets.Scripts.MainCore
         [SerializeField] private GameSession _gameSession;
         [SerializeField] private PaymentSystem _paymentSystem;
         [SerializeField] private GameUI _gameUi;
+        [SerializeField] private Sound _sound;
         [SerializeField] private Localizer _localizer;
         [SerializeField] private MinionSpawner _minionSpawner;
         [SerializeField] private ItemManager _itemManager;
@@ -46,6 +47,9 @@ namespace Assets.Scripts.MainCore
             _itemManager.Init();
             _paymentSystem.Init(_gameSession);
             _gameUi.Init(_paymentSystem);
+            _sound.Init();
+            _sound.PlayBackgroundMusic(CollectionOfSounds.Game);
+            _sound.PlayBackgroundSounds(CollectionOfSounds.Bird);
             _localizer.Init();
             Invoke(nameof(StartSpawn), 1f);
         }
@@ -53,6 +57,7 @@ namespace Assets.Scripts.MainCore
         private void StartSpawn()
         {
             _minionSpawner.AddMinion();
+            _sound.PlaySFX(CollectionOfSounds.Car);
         }
         
 #if UNITY_EDITOR

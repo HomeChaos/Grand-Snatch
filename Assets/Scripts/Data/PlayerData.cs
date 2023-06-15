@@ -58,7 +58,7 @@ namespace Assets.Scripts.Data
             set
             {
                 _isMusicOn = value;
-                MusicStatusChange?.Invoke(value);
+                MusicStatusChange?.Invoke();
                 SaveData();
             }
         }
@@ -71,7 +71,7 @@ namespace Assets.Scripts.Data
             set
             {
                 _isSFXOn = value;
-                SFXStatusChange?.Invoke(value);
+                SFXStatusChange?.Invoke();
                 SaveData();
             }
         }
@@ -91,8 +91,8 @@ namespace Assets.Scripts.Data
 
         public bool IsDataLoaded { get; private set; } = false;
 
-        public event UnityAction<bool> MusicStatusChange;
-        public event UnityAction<bool> SFXStatusChange;
+        public event UnityAction MusicStatusChange;
+        public event UnityAction SFXStatusChange;
         public event UnityAction<int> MoneyChanged;
         public event UnityAction<string> LanguageChange; 
 
