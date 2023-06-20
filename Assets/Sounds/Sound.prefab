@@ -573,7 +573,7 @@ MonoBehaviour:
     _volume: 0.771
   - _type: 2
     _clip: {fileID: 8300000, guid: 1ef10158b59c86a45896b952b86bc20e, type: 3}
-    _volume: 0.771
+    _volume: 0.494
   - _type: 3
     _clip: {fileID: 8300000, guid: 8665dc19d36b3e64395a579885e410ce, type: 3}
     _volume: 1

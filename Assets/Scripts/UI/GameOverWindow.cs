@@ -8,10 +8,12 @@ namespace Assets.Scripts.UI
     public class GameOverWindow : MonoBehaviour
     {
         [SerializeField] private Button _nextLevel;
+        [SerializeField] private ParticleSystem _particle;
 
         private void OnEnable()
         {
             _nextLevel.onClick.AddListener(LoadNextLevel);
+            _particle.Play();
         }
 
         private void OnDisable()

@@ -16,6 +16,7 @@ namespace Assets.Scripts.Data
         
         [SerializeField] private MinionSpawner _minionSpawner;
         [SerializeField] private ItemManager _itemManager;
+        [SerializeField] private ParticleSystem _sellItemParticle;
         [SerializeField] private ProductItem _addMinion;
         [SerializeField] private ProductItem _addSpeed;
         [SerializeField] private ProductItem _income;
@@ -63,6 +64,7 @@ namespace Assets.Scripts.Data
 
             ItemSold?.Invoke(_itemManager.MaxCountOfItems, ++_countSoldItems);
             Sound.Instance.PlaySFX(CollectionOfSounds.Coin);
+            _sellItemParticle.Play();
             
             if (_itemManager.MaxCountOfItems == _countSoldItems)
                 AllItemsSold?.Invoke();
@@ -70,9 +72,9 @@ namespace Assets.Scripts.Data
 
         private void InitValueForBuy()
         {
-            _addMinion.Product.SetValues(1, _gameSession.MinionCost);
-            _addSpeed.Product.SetValues(_gameSession.MinionSpeedLevel, _gameSession.SpeedCost);
-            _income.Product.SetValues(_gameSession.IncomeLevel, _gameSession.CostOfUpdateItem);
+            _addMinion.BoostKey.SetValues(1, _gameSession.MinionCost);
+            _addSpeed.BoostKey.SetValues(_gameSession.MinionSpeedLevel, _gameSession.SpeedCost);
+            _income.BoostKey.SetValues(_gameSession.IncomeLevel, _gameSession.CostOfUpdateItem);
         }
 
         private bool TryPay(int payment)
@@ -95,7 +97,8 @@ namespace Assets.Scripts.Data
                 {
                     _minionSpawner.AddMinion();
                     _gameSession.UpdateMinionCost();
-                    _addMinion.Product.SetValues(_minionSpawner.CountOfMinions, _gameSession.MinionCost);
+                    _addMinion.BoostKey.SetValues(_minionSpawner.CountOfMinions, _gameSession.MinionCost);
+                    _addMinion.BoostKey.Particle.Play();
                 }
                 else
                 {
@@ -115,7 +118,8 @@ namespace Assets.Scripts.Data
                 _gameSession.MinionSpecifications.AddSpeed();
                 _gameSession.UpdateSpeedCost();
                 _minionSpawner.AddSpeed();
-                _addSpeed.Product.SetValues(_gameSession.MinionSpeedLevel, _gameSession.SpeedCost);
+                _addSpeed.BoostKey.SetValues(_gameSession.MinionSpeedLevel, _gameSession.SpeedCost);
+                _addSpeed.BoostKey.Particle.Play();
             }
             else
             {
@@ -128,7 +132,8 @@ namespace Assets.Scripts.Data
             if (TryPay(_gameSession.CostOfUpdateItem))
             {
                 _gameSession.UpdateItemCost();
-                _income.Product.SetValues(_gameSession.IncomeLevel, _gameSession.CostOfUpdateItem);
+                _income.BoostKey.SetValues(_gameSession.IncomeLevel, _gameSession.CostOfUpdateItem);
+                _income.BoostKey.Particle.Play();
             }
             else
             {
@@ -141,9 +146,9 @@ namespace Assets.Scripts.Data
     public class ProductItem
     {
         [SerializeField] private Button _button;
-        [SerializeField] private Product _product;
+        [SerializeField] private BoostKey boostKey;
 
         public Button Button => _button;
-        public Product Product => _product;
+        public BoostKey BoostKey => boostKey;
     }
 }

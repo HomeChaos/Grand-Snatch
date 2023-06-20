@@ -8,6 +8,7 @@ namespace Assets.Scripts.MainCore.MinionScripts
     public class MinionBoost: MonoBehaviour
     {
         [SerializeField] private float _boostTime = 1f;
+        [SerializeField] private ParticleSystem _particleSystem;
 
         private NavMeshAgent _agent;
         private Booster _booster;
@@ -44,8 +45,14 @@ namespace Assets.Scripts.MainCore.MinionScripts
         private IEnumerator ProduceBoost()
         {
             _agent.speed = GameSession.Instance.MinionSpecifications.MaxSpeed;
+            
+            if (_particleSystem.isStopped)
+                _particleSystem.Play();
+
             yield return new WaitForSeconds(_boostTime);
+            
             _agent.speed = GameSession.Instance.MinionSpecifications.MinSpeed;
+            _particleSystem.Stop();
             _boost = null;
         }
     }
