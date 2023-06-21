@@ -2,7 +2,7 @@
 {
     public enum CarType
     {
-        DefaultTruck = 0,
+        Base = 0,
         Cap,
         Taxi,
         Van,

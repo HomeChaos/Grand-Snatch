@@ -34,7 +34,7 @@ namespace Assets.Scripts.UI
 
         private void ShowShop()
         {
-            Debug.Log("Shop");
+            ShopLevel.Load();
         }
 
         private void ShowCreators()

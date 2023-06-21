@@ -10,6 +10,7 @@ namespace Assets.Scripts.MainCore
     public class GameStart : MonoBehaviour
     {
         [SerializeField] private PlayerData _playerData;
+        [SerializeField] private GarageOfCars _garage;
         [SerializeField] private GameSession _gameSession;
         [SerializeField] private PaymentSystem _paymentSystem;
         [SerializeField] private GameUI _gameUi;
@@ -43,6 +44,7 @@ namespace Assets.Scripts.MainCore
 
         private void ApplyGameSettings()
         {
+            _garage.Init();
             _gameSession.Init();
             _itemManager.Init();
             _paymentSystem.Init(_gameSession);

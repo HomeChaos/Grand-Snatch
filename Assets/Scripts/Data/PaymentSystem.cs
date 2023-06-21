@@ -102,7 +102,7 @@ namespace Assets.Scripts.Data
                 }
                 else
                 {
-                    _informant.NotEnoughMoney(LackOfMoney.Minions);
+                    _informant.ShowInfoNotEnoughMoney(LackOfMoney.Minions);
                 }
             }
             else
@@ -123,7 +123,7 @@ namespace Assets.Scripts.Data
             }
             else
             {
-                _informant.NotEnoughMoney(LackOfMoney.Speed);
+                _informant.ShowInfoNotEnoughMoney(LackOfMoney.Speed);
             }
         }
 
@@ -137,7 +137,7 @@ namespace Assets.Scripts.Data
             }
             else
             {
-                _informant.NotEnoughMoney(LackOfMoney.Income);
+                _informant.ShowInfoNotEnoughMoney(LackOfMoney.Income);
             }
         }
     }

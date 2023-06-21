@@ -1,33 +1,50 @@
 ﻿using System;
+using System.Collections.Generic;
 using UI.Localization;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace Assets.Scripts.Data
 {
-    [Serializable]
-    public class PlayerData : IDisposable
+    public class PlayerData : MonoBehaviour, IDisposable
     {
+        [NonSerialized] public Dictionary<int, int> Cars = new Dictionary<int, int>
+        {
+            {0, 0}, 
+            {1, 1},
+            {2, 1},
+            {3, 1},
+            {4, 1},
+            {5, 1},
+            {6, 1},
+            {7, 1},
+            {8, 10},
+            {9, 20}
+        };
+
         private const string MoneyKey = "Money";
         private const string LevelKey = "Level";
         private const string MusicKey = "Music";
         private const string SFXKey = "SFX";
         private const string LocalizationKey = "Localization";
+        private const string SelectedCarKey = "Car";
         
         private const int MoneyDefault = 100;
         private const int LevelDefault = 7;
         private const bool MusicDefault = true;
         private const bool SFXDefault = true;
+        private const int SelectedCarDefault = 0;
         
         public static PlayerData Instance { get; private set; }
 
-        [SerializeField] private int _money;
-        [SerializeField] private int _level;
-        [Space]
-        [SerializeField] private bool _isMusicOn;
-        [SerializeField] private bool _isSFXOn;
-        [SerializeField] private string _currentLocalization;
         [SerializeField] private Config _config;
+        
+        private int _money;
+        private int _level;
+        private bool _isMusicOn;
+        private bool _isSFXOn;
+        private string _currentLocalization;
+        private int _selectedCar;
 
         public Config Config => _config;
 
@@ -89,6 +106,21 @@ namespace Assets.Scripts.Data
             }
         }
 
+        public int SelectedCar
+        {
+            get
+            {
+                return _selectedCar;
+            }
+            set
+            {
+                if (0 <= value)
+                    _selectedCar = value;
+                else
+                    throw new RankException("Incorrect value of car type!");
+            }
+        }
+
         public bool IsDataLoaded { get; private set; } = false;
 
         public event UnityAction MusicStatusChange;
@@ -116,6 +148,7 @@ namespace Assets.Scripts.Data
             PlayerPrefs.SetInt(MusicKey, Convert.ToInt32(_isMusicOn));
             PlayerPrefs.SetInt(SFXKey, Convert.ToInt32(_isSFXOn));
             PlayerPrefs.SetString(LocalizationKey, _currentLocalization);
+            PlayerPrefs.SetInt(SelectedCarKey, _selectedCar);
 
             PlayerPrefs.Save();
         }
@@ -123,12 +156,13 @@ namespace Assets.Scripts.Data
         private void LoadData()
         {
             _money = PlayerPrefs.HasKey(MoneyKey) ? PlayerPrefs.GetInt(MoneyKey) : MoneyDefault;
-            _money = 10000000;
+            _money = int.MaxValue;
             _level = PlayerPrefs.HasKey(LevelKey) ? PlayerPrefs.GetInt(LevelKey) : LevelDefault;
             _level = 1;
             _isMusicOn = PlayerPrefs.HasKey(MusicKey) ? Convert.ToBoolean(PlayerPrefs.GetInt(MusicKey)) : MusicDefault;
             _isSFXOn = PlayerPrefs.HasKey(SFXKey) ? Convert.ToBoolean(PlayerPrefs.GetInt(SFXKey)) : SFXDefault;
             _currentLocalization = PlayerPrefs.HasKey(LocalizationKey) ? PlayerPrefs.GetString(LocalizationKey) : Language.ENG;
+            _selectedCar = PlayerPrefs.HasKey(SelectedCarKey) ? PlayerPrefs.GetInt(SelectedCarKey) : SelectedCarDefault;
 
             IsDataLoaded = true;
         }

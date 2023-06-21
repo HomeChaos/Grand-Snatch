@@ -11,9 +11,9 @@ namespace Assets.Scripts.Shop
     public class ShopStart : MonoBehaviour
     {
         [SerializeField] private PlayerData _playerData;
-        [SerializeField] private SettingsWindow _settingsWindow;
         [SerializeField] private Sound _sound;
         [SerializeField] private Localizer _localizer;
+        [SerializeField] private Shop _shop;
         [SerializeField] private TMP_Text _money;
 
         private void Awake()
@@ -25,6 +25,7 @@ namespace Assets.Scripts.Shop
         private void OnDestroy()
         {
             _playerData.SaveData();
+            _playerData.MoneyChanged -= InstanceOnMoneyChanged;
         }
 
         private IEnumerator WaitForLoadPlayerData()
@@ -41,11 +42,17 @@ namespace Assets.Scripts.Shop
         
         private void ApplyGameSettings()
         {
+            _playerData.MoneyChanged += InstanceOnMoneyChanged;
+            _localizer.Init();
+            _shop.Init();
             _money.text = NumberSeparator.SplitNumber(PlayerData.Instance.Money);
-            _settingsWindow.Init();
             _sound.Init();
             _sound.PlayBackgroundMusic(CollectionOfSounds.MainMenu);
-            _localizer.Init();
+        }
+
+        private void InstanceOnMoneyChanged(int newValue)
+        {
+            _money.text = NumberSeparator.SplitNumber(PlayerData.Instance.Money);
         }
     }
 }

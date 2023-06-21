@@ -35,7 +35,7 @@ namespace Assets.Scripts.UI
             StartAnimation(_enoughMinions);
         }
         
-        public void NotEnoughMoney(LackOfMoney op)
+        public void ShowInfoNotEnoughMoney(LackOfMoney op)
         {
             switch (op)
             {

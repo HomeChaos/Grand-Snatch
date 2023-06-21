@@ -42,10 +42,10 @@ namespace Assets.Scripts.MainCore
         private void ApplyGameSettings()
         {
             _money.text = NumberSeparator.SplitNumber(PlayerData.Instance.Money);
-            _settingsWindow.Init();
             _sound.Init();
             _sound.PlayBackgroundMusic(CollectionOfSounds.MainMenu);
             _localizer.Init();
+            _settingsWindow.Init();
         }
     }
 }

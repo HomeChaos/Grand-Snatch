@@ -567,7 +567,7 @@ MonoBehaviour:
   _soundItems:
   - _type: 0
     _clip: {fileID: 8300000, guid: 34efb3747e5bf504687ddb5c1356b82f, type: 3}
-    _volume: 0.751
+    _volume: 0.481
   - _type: 1
     _clip: {fileID: 8300000, guid: c06e0395744ef9d428e94d915c0fe533, type: 3}
     _volume: 0.771
