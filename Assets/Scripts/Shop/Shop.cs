@@ -43,11 +43,11 @@ namespace Assets.Scripts.Shop
 
         private void OnProductClicked(Product productItem, Price price)
         {
-            var typeCar = (int) price.CarType;
+            CarType carType = price.CarType;
             _currentProduct = productItem;
             _currentPrice = price;
 
-            if (PlayerData.Instance.Cars[typeCar] == 0)
+            if (PlayerData.Instance.ConditionsForCars[carType] == 0)
                 ChangeSelectCar();
             else if (price.IsBuyForAd) 
                 ShowMessageBoxWatchAd();
@@ -93,14 +93,14 @@ namespace Assets.Scripts.Shop
             
             if (response)
             {
-                int carType = (int) _currentPrice.CarType;
-                PlayerData.Instance.Cars[carType]--;
+                CarType carType = _currentPrice.CarType;
+                PlayerData.Instance.ChangeConditionForCar(carType);
                 
                 if (_currentPrice.IsBuyForAd)
                 {
                     _currentProduct.UpdateCostText();
                     
-                    if (PlayerData.Instance.Cars[carType] == 0)
+                    if (PlayerData.Instance.ConditionsForCars[carType] == 0)
                     {
                         _currentProduct.Unlock();
                     }

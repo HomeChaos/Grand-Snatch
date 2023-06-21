@@ -9,14 +9,12 @@ namespace Assets.Scripts.UI
         [SerializeField] private Button _start;
         [SerializeField] private Button _shop;
         [SerializeField] private Button _creators;
-        [SerializeField] private Button _settings;
 
         private void Awake()
         {
             _start.onClick.AddListener(StartGame);
             _shop.onClick.AddListener(ShowShop);
             _creators.onClick.AddListener(ShowCreators);
-            _settings.onClick.AddListener(ShowSettings);
         }
 
         private void OnDestroy()
@@ -24,7 +22,6 @@ namespace Assets.Scripts.UI
             _start.onClick.RemoveListener(StartGame);
             _shop.onClick.RemoveListener(ShowShop);
             _creators.onClick.RemoveListener(ShowCreators);
-            _settings.onClick.RemoveListener(ShowSettings);
         }
 
         private void StartGame()
@@ -40,11 +37,6 @@ namespace Assets.Scripts.UI
         private void ShowCreators()
         {
             Debug.Log("Creators");
-        }
-
-        private void ShowSettings()
-        {
-            Debug.Log("Settings");
         }
     }
 }

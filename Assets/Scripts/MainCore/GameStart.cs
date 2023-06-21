@@ -61,13 +61,5 @@ namespace Assets.Scripts.MainCore
             _minionSpawner.AddMinion();
             _sound.PlaySFX(CollectionOfSounds.Car);
         }
-        
-#if UNITY_EDITOR
-        [ContextMenu("Reset Data")]
-        private void ResetPlayerData()
-        {
-            _playerData.ResetData();
-        }
-#endif
     }
 }

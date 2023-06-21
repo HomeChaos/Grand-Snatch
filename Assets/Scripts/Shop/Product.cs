@@ -42,7 +42,7 @@ namespace Assets.Scripts.Shop
 
             _iconCheck.SetActive(false);
             
-            var numberOfOperationBeforeBuy = PlayerData.Instance.Cars[(int) price.CarType];
+            var numberOfOperationBeforeBuy = PlayerData.Instance.ConditionsForCars[price.CarType];
             
             if (numberOfOperationBeforeBuy == 0)
             {
@@ -83,7 +83,7 @@ namespace Assets.Scripts.Shop
 
         public void UpdateCostText()
         {
-            var numberOfOperationBeforeBuy = PlayerData.Instance.Cars[(int) _price.CarType];
+            var numberOfOperationBeforeBuy = PlayerData.Instance.ConditionsForCars[_price.CarType];
             _cost.text = $"{numberOfOperationBeforeBuy} / {_price.Cost}";
         }
     }

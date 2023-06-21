@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e377f1cf835440e1804cec88d6516b0f, type: 3}
+  m_Name: GameConfig
+  m_EditorClassIdentifier: 
+  _minMoneyRange: -2
+  _maxMoneyRange: 2
+  _ratioOfMoneyToLevel: 10
+  _startMinionCost: 10
+  _startSpeedCost: 11
+  _startCostOfUpdateItem: 11
+  _factorMinionCost: 1.5
+  _factorSpeedCost: 2.5
+  _factorItemCost: 3.7
+  _minionSpeedRange: 2
+  _speedDelta: 0.5
+  _maxCountOfMinions: 20
