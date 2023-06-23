@@ -51,6 +51,7 @@ namespace Assets.Scripts.Data
 
                 _money = value;
                 MoneyChanged?.Invoke(_money);
+                SaveMoney();
             }
         }
 
@@ -215,6 +216,12 @@ namespace Assets.Scripts.Data
             
             string result = String.Join(';', data.ToArray());
             return result;
+        }
+
+        private void SaveMoney()
+        {
+            PlayerPrefs.SetInt(MoneyKey, _money);
+            PlayerPrefs.Save();
         }
 
 

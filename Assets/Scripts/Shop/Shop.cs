@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using Assets.Scripts.Data;
+using IJunior.TypedScenes;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets.Scripts.Shop
 {
@@ -12,6 +14,8 @@ namespace Assets.Scripts.Shop
         [SerializeField] private MessageBox _messageBoxWatchAd;
         [SerializeField] private MessageBox _messageBoxBuy;
         [SerializeField] private MessageBox _messageBoxNotEnoughMoney;
+        [SerializeField] private Button _startButton;
+        [SerializeField] private Button _exitButton;
 
         private List<Product> _products = new List<Product>();
         private Product _currentProduct;
@@ -25,6 +29,8 @@ namespace Assets.Scripts.Shop
             }
 
             _messageBoxBuy.IsConfirmAction -= ProcessingReceivedFromMessageBox;
+            _startButton.onClick.RemoveListener(StartGame);
+            _exitButton.onClick.RemoveListener(Exit);
         }
 
         public void Init()
@@ -39,6 +45,19 @@ namespace Assets.Scripts.Shop
                 
                 _products.Add(product);
             }
+            
+            _startButton.onClick.AddListener(StartGame);
+            _exitButton.onClick.AddListener(Exit);
+        }
+
+        private void StartGame()
+        {
+            Level_1.Load();
+        }
+
+        private void Exit()
+        {
+            MainMenu.Load();
         }
 
         private void OnProductClicked(Product productItem, Price price)

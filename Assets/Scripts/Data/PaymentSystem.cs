@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.MainCore;
 using System;
+using Assets.Scripts.MainCore.MinionScripts;
 using Assets.Scripts.Sounds;
 using Assets.Scripts.UI;
 using UnityEngine;

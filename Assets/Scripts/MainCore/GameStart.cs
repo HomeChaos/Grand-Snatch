@@ -1,5 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using Agava.WebUtility;
 using Assets.Scripts.Data;
+using Assets.Scripts.MainCore.HumanScripts;
+using Assets.Scripts.MainCore.MinionScripts;
 using Assets.Scripts.Sounds;
 using Assets.Scripts.UI;
 using UI.Localization;
@@ -11,6 +15,7 @@ namespace Assets.Scripts.MainCore
     {
         [SerializeField] private PlayerData _playerData;
         [SerializeField] private GarageOfCars _garage;
+        [SerializeField] private HumansSpawner _humansSpawner;
         [SerializeField] private GameSession _gameSession;
         [SerializeField] private PaymentSystem _paymentSystem;
         [SerializeField] private GameUI _gameUi;
@@ -46,6 +51,7 @@ namespace Assets.Scripts.MainCore
         {
             _garage.Init();
             _gameSession.Init();
+            _humansSpawner.Init();
             _itemManager.Init();
             _paymentSystem.Init(_gameSession);
             _gameUi.Init(_paymentSystem);

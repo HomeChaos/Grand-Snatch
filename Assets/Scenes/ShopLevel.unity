@@ -1948,7 +1948,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbf51be86e70d7941bd40914206e4ddc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  translationName: Shop
+  translationName: Exit
   FallbackText: SHOP
 --- !u!1 &872313296
 GameObject:
@@ -6874,6 +6874,8 @@ MonoBehaviour:
   _messageBoxWatchAd: {fileID: 7630668708624235874}
   _messageBoxBuy: {fileID: 165210944}
   _messageBoxNotEnoughMoney: {fileID: 1696273832}
+  _startButton: {fileID: 1410348888}
+  _exitButton: {fileID: 1600671584}
 --- !u!114 &913911671
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6903,7 +6905,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd56be6485c844349ae70b8dc0a16940, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _config: {fileID: 11400000, guid: 8302a2761ef2bcb4ab9625e0fc906ee5, type: 2}
 --- !u!1 &916439049
 GameObject:
   m_ObjectHideFlags: 0
@@ -7938,7 +7939,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3294264093760384333, guid: c95c07722cee89342a96cd2971cc063f, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 659.941
       objectReference: {fileID: 0}
     - target: {fileID: 3294264093760384333, guid: c95c07722cee89342a96cd2971cc063f, type: 3}
       propertyPath: m_SizeDelta.y
@@ -8018,6 +8019,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1334ed51e34b423bbc1a9c7b05680633, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1410348888 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3553941651388898603, guid: c95c07722cee89342a96cd2971cc063f, type: 3}
+  m_PrefabInstance: {fileID: 1410348883}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1410348886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &1505917946
@@ -8433,7 +8445,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3294264093760384333, guid: c95c07722cee89342a96cd2971cc063f, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 659.941
       objectReference: {fileID: 0}
     - target: {fileID: 3294264093760384333, guid: c95c07722cee89342a96cd2971cc063f, type: 3}
       propertyPath: m_SizeDelta.y
@@ -8490,7 +8502,7 @@ PrefabInstance:
     - target: {fileID: 3294264093760384334, guid: c95c07722cee89342a96cd2971cc063f, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 86ad28a37b0134b33b88df67b42b7fe0, type: 3}
+      objectReference: {fileID: 21300000, guid: 681db73f19fb24efe843aad713eccb43, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c95c07722cee89342a96cd2971cc063f, type: 3}
 --- !u!224 &1600671580 stripped
@@ -8513,6 +8525,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1334ed51e34b423bbc1a9c7b05680633, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1600671584 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3553941651388898603, guid: c95c07722cee89342a96cd2971cc063f, type: 3}
+  m_PrefabInstance: {fileID: 1600671579}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1600671582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &1618002391
@@ -9792,10 +9815,10 @@ RectTransform:
   m_Father: {fileID: 707230605}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1704, y: -394}
-  m_SizeDelta: {x: 659.941, y: 663.2339}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 62, y: 174.60675}
+  m_SizeDelta: {x: 1609.9, y: 156.62}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2143515980
 MonoBehaviour:
@@ -9806,7 +9829,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2143515978}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
+  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
@@ -9814,11 +9837,11 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 4
+  m_ChildAlignment: 0
   m_Spacing: 0
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
-  m_ChildControlWidth: 1
+  m_ChildControlWidth: 0
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
@@ -10044,7 +10067,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -0.025146484, y: -0.012115}
+  m_AnchoredPosition: {x: -0.025146484, y: 118}
   m_SizeDelta: {x: 0.05, y: 1439.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &4011341163059683590

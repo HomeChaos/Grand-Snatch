@@ -10,5 +10,11 @@ namespace DefaultNamespace
         {
 
         }
+
+        [ContextMenu("Show Test Debug")]
+        public void ShowTestDebug()
+        {
+
+        }
     }
 }

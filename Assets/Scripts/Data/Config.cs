@@ -25,6 +25,10 @@ namespace Assets.Scripts.Data
         [SerializeField] private float _speedDelta = 0.5f;
         [SerializeField] private int _maxCountOfMinions = 20;
 
+        [Header("Human Specifications")] 
+        [SerializeField] private int _humanCountToSpawn = 3;
+        [SerializeField] private int _humanSpeed = 3;
+
         public int MaxCountOfMinions => _maxCountOfMinions;
 
         public float SpeedDelta => _speedDelta;
@@ -48,5 +52,9 @@ namespace Assets.Scripts.Data
         public int MinMoneyRange => _minMoneyRange;
 
         public int MaxMoneyRange => _maxMoneyRange;
+
+        public int HumanCountToSpawn => _humanCountToSpawn;
+
+        public int HumanSpeed => _humanSpeed;
     }
 }

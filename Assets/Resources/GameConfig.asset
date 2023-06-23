@@ -24,3 +24,5 @@ MonoBehaviour:
   _minionSpeedRange: 2
   _speedDelta: 0.5
   _maxCountOfMinions: 20
+  _humanCountToSpawn: 3
+  _humanSpeed: 1

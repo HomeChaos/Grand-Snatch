@@ -99,7 +99,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8839926433212368336}
-  m_Material: {fileID: 13400000, guid: 52b969b591b45894c949a2772f1285a1, type: 2}
+  m_Material: {fileID: 13400000, guid: afb238a97ea89dd4abccf9b983361076, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.5
@@ -184,7 +184,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _boostTime: 1
-  _particle: {fileID: 209881327809633966}
   _particleSystem: {fileID: 209881327795226472}
 --- !u!1 &9081775788889751604
 GameObject:
@@ -358,11 +357,6 @@ ParticleSystem:
 --- !u!4 &209881327809346694 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 424984, guid: c05e92eaee7a00844867e5edc8e0dde1, type: 3}
-  m_PrefabInstance: {fileID: 209881327809740958}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &209881327809633966 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 187952, guid: c05e92eaee7a00844867e5edc8e0dde1, type: 3}
   m_PrefabInstance: {fileID: 209881327809740958}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1011344490326938958

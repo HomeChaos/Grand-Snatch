@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Data;
+using IJunior.TypedScenes;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +9,7 @@ namespace Assets.Scripts.UI
     {
         [SerializeField] private Toggle _musicToggle;
         [SerializeField] private Toggle _SFXToggle;
+        [SerializeField] private Button _shopButton;
         [SerializeField] private Button _exitButton;
         [SerializeField] private Button _closeButton;
 
@@ -16,6 +18,7 @@ namespace Assets.Scripts.UI
             _musicToggle.StateChange += OnMusicStateChange;
             _SFXToggle.StateChange += OnSFXStateChange;
             
+            _shopButton.onClick.AddListener(LoadShop);
             _exitButton.onClick.AddListener(ExitGame);
             _closeButton.onClick.AddListener(CloseWindow);
             
@@ -33,10 +36,16 @@ namespace Assets.Scripts.UI
             _musicToggle.Dispose();
             _SFXToggle.Dispose();
             
+            _shopButton.onClick.RemoveListener(LoadShop);
             _exitButton.onClick.RemoveListener(ExitGame);
             _closeButton.onClick.RemoveListener(CloseWindow);
             
             Time.timeScale = 1f;
+        }
+
+        private void LoadShop()
+        {
+            ShopLevel.Load();
         }
 
         private void CloseWindow()

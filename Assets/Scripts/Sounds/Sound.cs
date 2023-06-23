@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Sounds
 {
+    [RequireComponent(typeof(BackgroundSound))]
     public class Sound : MonoBehaviour
     {
         public static Sound Instance { get; private set; }
@@ -68,8 +69,24 @@ namespace Assets.Scripts.Sounds
 
         public void PlaySFX(CollectionOfSounds type)
         {
-            if (_isSFXOn)
+            if (_isSFXOn && _sfx.isPlaying == false)
                 Play(_sfx, type);
+        }
+
+        public void Pause()
+        {
+            _backgroundMusic.Pause();
+            _backgroundSounds.Pause();
+            _UISfx.Pause();
+            _sfx.Pause();
+        }
+
+        public void UpPause()
+        {
+            _backgroundMusic.UnPause();
+            _backgroundSounds.UnPause();
+            _UISfx.UnPause();
+            _sfx.UnPause();
         }
 
         private void PlayBackground(AudioSource source, CollectionOfSounds type, bool isPlay)

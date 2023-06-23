@@ -53,13 +53,13 @@ namespace Assets.Scripts.MainCore.MinionScripts
         {
             _agent.SetDestination(targetPosition);
 
-            var distane = Vector3.Distance(transform.position, targetPosition);
+            var distance = Vector3.Distance(transform.position, targetPosition);
             var waitForEndOfFrame = new WaitForEndOfFrame();
 
-            while (distane > _minDistance)
+            while (distance > _minDistance)
             {
                 yield return waitForEndOfFrame;
-                distane = Vector3.Distance(transform.position, targetPosition);
+                distance = Vector3.Distance(transform.position, targetPosition);
             }
 
             nextMinionAction();
