@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Assets.Scripts.Data;
+using Assets.Scripts.YandexSDK;
 using IJunior.TypedScenes;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,6 +17,9 @@ namespace Assets.Scripts.Shop
         [SerializeField] private MessageBox _messageBoxNotEnoughMoney;
         [SerializeField] private Button _startButton;
         [SerializeField] private Button _exitButton;
+
+        [Space] [Header("AD")]
+        [SerializeField] private YandexAd _yandexAd;
 
         private List<Product> _products = new List<Product>();
         private Product _currentProduct;
@@ -112,23 +116,29 @@ namespace Assets.Scripts.Shop
             
             if (response)
             {
-                CarType carType = _currentPrice.CarType;
-                PlayerData.Instance.ChangeConditionForCar(carType);
-                
+
                 if (_currentPrice.IsBuyForAd)
                 {
-                    _currentProduct.UpdateCostText();
-                    
-                    if (PlayerData.Instance.ConditionsForCars[carType] == 0)
-                    {
-                        _currentProduct.Unlock();
-                    }
+                    _yandexAd.OnShowVideoButtonClick(OnRewarded);
                 }
                 else
                 {
+                    PlayerData.Instance.ChangeConditionForCar(_currentPrice.CarType);
                     PlayerData.Instance.Money -= _currentPrice.Cost;
                     _currentProduct.Unlock();
                 }
+            }
+        }
+
+        private void OnRewarded()
+        {
+            Debug.Log("[!] Я получил награду!");
+            PlayerData.Instance.ChangeConditionForCar(_currentPrice.CarType);
+            _currentProduct.UpdateCostText();
+                    
+            if (PlayerData.Instance.ConditionsForCars[_currentPrice.CarType] == 0)
+            {
+                _currentProduct.Unlock();
             }
         }
     }

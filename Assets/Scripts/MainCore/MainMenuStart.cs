@@ -10,7 +10,6 @@ namespace Assets.Scripts.MainCore
 {
     public class MainMenuStart : MonoBehaviour
     {
-        [SerializeField] private PlayerData _playerData;
         [SerializeField] private SettingsWindow _settingsWindow;
         [SerializeField] private Sound _sound;
         [SerializeField] private Localizer _localizer;
@@ -18,21 +17,39 @@ namespace Assets.Scripts.MainCore
         
         private void Awake()
         {
-            _playerData.Init();
-            StartCoroutine(WaitForLoadPlayerData());
+            StartCoroutine(WaitForYandexInitialize());
         }
         
         private void OnDestroy()
         {
-            _playerData.SaveData();
+            PlayerData.Instance.SaveData();
+        }
+
+        private IEnumerator WaitForYandexInitialize()
+        {
+#if UNITY_WEBGL && !UNITY_EDITOR
+            while (YandexGamesSdk.IsInitialized == false)
+            {
+                yield return null;
+            }
+#endif
+            yield return null;
+
+            StartCoroutine(WaitForLoadPlayerData());
         }
 
         private IEnumerator WaitForLoadPlayerData()
         {
             var waitForEndOfFrame = new WaitForEndOfFrame();
+            bool isPlayerDataLoaded = false;
             
-            while (_playerData.IsDataLoaded == false)
+            while (isPlayerDataLoaded == false)
             {
+                if (PlayerData.Instance != null)
+                {
+                    isPlayerDataLoaded = PlayerData.Instance.IsDataLoaded;
+                }
+                
                 yield return waitForEndOfFrame;
             }
             

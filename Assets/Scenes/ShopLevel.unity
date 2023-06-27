@@ -6830,7 +6830,6 @@ GameObject:
   m_Component:
   - component: {fileID: 913911669}
   - component: {fileID: 913911671}
-  - component: {fileID: 913911672}
   - component: {fileID: 913911670}
   m_Layer: 0
   m_Name: '### ShopStart ###'
@@ -6876,6 +6875,7 @@ MonoBehaviour:
   _messageBoxNotEnoughMoney: {fileID: 1696273832}
   _startButton: {fileID: 1410348888}
   _exitButton: {fileID: 1600671584}
+  _yandexAd: {fileID: 1025083817}
 --- !u!114 &913911671
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6888,23 +6888,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8334374f12e14c67b593f04c70ae5edc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerData: {fileID: 913911672}
   _sound: {fileID: 281928689}
   _localizer: {fileID: 1968447667}
   _shop: {fileID: 913911670}
   _money: {fileID: 303506878}
---- !u!114 &913911672
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 913911667}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd56be6485c844349ae70b8dc0a16940, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &916439049
 GameObject:
   m_ObjectHideFlags: 0
@@ -7096,6 +7083,7 @@ MonoBehaviour:
   _SFXToggle:
     _toggleOn: {fileID: 548717325}
     _toggleOff: {fileID: 548717324}
+  _shopButton: {fileID: 0}
   _exitButton: {fileID: 1618002396}
   _closeButton: {fileID: 1658320922}
 --- !u!1 &931718679
@@ -7320,6 +7308,50 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!1 &1025083816
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1025083818}
+  - component: {fileID: 1025083817}
+  m_Layer: 0
+  m_Name: YandexAd
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1025083817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1025083816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1b0375286d0488d9670724717cc485f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1025083818
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1025083816}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.6037948, y: 0.8485018, z: 91.39936}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1058689057
 GameObject:
   m_ObjectHideFlags: 0

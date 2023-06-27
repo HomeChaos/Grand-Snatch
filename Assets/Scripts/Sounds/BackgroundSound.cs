@@ -17,10 +17,11 @@ namespace Assets.Scripts.Sounds
 
         private void ChangeBackgroundSounds(bool hidden)
         {
+            Debug.Log($"Hidden: {hidden}");
             if (hidden)
-                Sound.Instance.UpPause();
-            else
                 Sound.Instance.Pause();
+            else
+                Sound.Instance.UpPause();
         }
     }
 }

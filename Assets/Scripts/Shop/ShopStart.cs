@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using Assets.Scripts.Data;
+﻿using Assets.Scripts.Data;
 using Assets.Scripts.Sounds;
 using Assets.Scripts.UI;
 using TMPro;
@@ -10,7 +9,6 @@ namespace Assets.Scripts.Shop
 {
     public class ShopStart : MonoBehaviour
     {
-        [SerializeField] private PlayerData _playerData;
         [SerializeField] private Sound _sound;
         [SerializeField] private Localizer _localizer;
         [SerializeField] private Shop _shop;
@@ -18,31 +16,18 @@ namespace Assets.Scripts.Shop
 
         private void Awake()
         {
-            _playerData.Init();
-            StartCoroutine(WaitForLoadPlayerData());
+            ApplyGameSettings();
         }
         
         private void OnDestroy()
         {
-            _playerData.SaveData();
-            _playerData.MoneyChanged -= InstanceOnMoneyChanged;
+            PlayerData.Instance.SaveData();
+            PlayerData.Instance.MoneyChanged -= InstanceOnMoneyChanged;
         }
 
-        private IEnumerator WaitForLoadPlayerData()
-        {
-            var waitForEndOfFrame = new WaitForEndOfFrame();
-            
-            while (_playerData.IsDataLoaded == false)
-            {
-                yield return waitForEndOfFrame;
-            }
-            
-            ApplyGameSettings();
-        }
-        
         private void ApplyGameSettings()
         {
-            _playerData.MoneyChanged += InstanceOnMoneyChanged;
+            PlayerData.Instance.MoneyChanged += InstanceOnMoneyChanged;
             _localizer.Init();
             _shop.Init();
             _money.text = NumberSeparator.SplitNumber(PlayerData.Instance.Money);

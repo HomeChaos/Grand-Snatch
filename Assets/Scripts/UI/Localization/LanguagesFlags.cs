@@ -20,13 +20,24 @@ namespace UI.Localization
 
         private void OnEnable()
         {
+            Debug.Log("Start find language");
             foreach (var flag in _flags)
             {
+                Debug.Log($"{flag.Language} & {PlayerData.Instance.CurrentLocalization} = {flag.Language == PlayerData.Instance.CurrentLocalization}");
                 if (flag.Language == PlayerData.Instance.CurrentLocalization)
                 {
                     flag.SetIconActive(true);
                     break;
                 }
+            }
+        }
+
+        private void OnDisable()
+        {
+            foreach (var flag in _flags)
+            {
+                flag.FlagClicked += OnFlagClick;
+                flag.SetIconActive(false);
             }
         }
 

@@ -26,9 +26,11 @@ namespace Assets.Scripts.Data
         private PaymentInformant _informant;
         
         private int _countSoldItems;
+        private int _earningsPerLevel = 0;
         
         public int MaxCountOfItems => _itemManager.MaxCountOfItems;
-        
+        public int EarningsPerLevel => _earningsPerLevel;
+
         public event UnityAction<int, int> ItemSold;
         public event UnityAction AllItemsSold;
 
@@ -56,7 +58,9 @@ namespace Assets.Scripts.Data
         public void SellItem()
         {
             int spread = Random.Range(PlayerData.Instance.Config.MinMoneyRange, PlayerData.Instance.Config.MaxMoneyRange + 2);
-            int newValueOfMoney = PlayerData.Instance.Money + _gameSession.CostOfSaleItem + spread;
+            int earnings = _gameSession.CostOfSaleItem + spread;
+            _earningsPerLevel += earnings;
+            int newValueOfMoney = PlayerData.Instance.Money + earnings;
             
             if (newValueOfMoney < 0)
                 PlayerData.Instance.Money = int.MaxValue;

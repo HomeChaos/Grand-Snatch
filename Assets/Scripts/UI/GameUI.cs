@@ -1,6 +1,5 @@
 ﻿using System;
 using Assets.Scripts.Data;
-using Assets.Scripts.Sounds;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -55,7 +54,6 @@ namespace Assets.Scripts.UI
 
         private void ShowGameOverWindow()
         {
-            Sound.Instance.PlaySFX(CollectionOfSounds.Win);
             _gameOver.SetActive(true);
         }
     }

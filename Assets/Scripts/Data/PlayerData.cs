@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using Agava.YandexGames;
 using Assets.Scripts.Shop;
 using UI.Localization;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -55,7 +54,24 @@ namespace Assets.Scripts.Data
             }
         }
 
-        public int Level => _level;
+        public int Level
+        {
+            get
+            {
+                return _level;
+            }
+            set
+            {
+                if (value == 1 && (_level + value) == (_level + 1))
+                {
+                    _level = value;
+                }
+                else
+                {
+                    throw new RankException("Incorrect value of Level");
+                }
+            }
+        }
 
         public bool IsMusicOn
         {
@@ -119,14 +135,36 @@ namespace Assets.Scripts.Data
         public event UnityAction MusicStatusChange;
         public event UnityAction SFXStatusChange;
         public event UnityAction<int> MoneyChanged;
-        public event UnityAction<string> LanguageChange; 
+        public event UnityAction<string> LanguageChange;
 
-        public void Init()
+
+        private void Awake()
         {
-            if (Instance == null)
+            var existsPlayerData = GetExistsPlayerData();
+
+            if (existsPlayerData == null)
+            {
+                DontDestroyOnLoad(this);
                 Instance = this;
+                LoadData();
+            }
+            else
+            {
+                Destroy(gameObject);
+            }       
+        }
+
+        private PlayerData GetExistsPlayerData()
+        {
+            var playerData = FindObjectsOfType<PlayerData>();
             
-            LoadData();
+            foreach (var data in playerData)
+            {
+                if (data != this) 
+                    return data;
+            }
+            
+            return null;
         }
 
         public void Dispose()
@@ -154,6 +192,7 @@ namespace Assets.Scripts.Data
 
             PlayerPrefs.Save();
         }
+        
 
         private void LoadData()
         {
@@ -163,7 +202,7 @@ namespace Assets.Scripts.Data
             _level = PlayerPrefs.HasKey(LevelKey) ? PlayerPrefs.GetInt(LevelKey) : LevelDefault;
             _isMusicOn = PlayerPrefs.HasKey(MusicKey) ? Convert.ToBoolean(PlayerPrefs.GetInt(MusicKey)) : MusicDefault;
             _isSFXOn = PlayerPrefs.HasKey(SFXKey) ? Convert.ToBoolean(PlayerPrefs.GetInt(SFXKey)) : SFXDefault;
-            _currentLocalization = PlayerPrefs.HasKey(LocalizationKey) ? PlayerPrefs.GetString(LocalizationKey) : Language.ENG;
+            _currentLocalization = PlayerPrefs.HasKey(LocalizationKey) ? PlayerPrefs.GetString(LocalizationKey) : DetermineBrowserLanguage();
             _selectedCar = PlayerPrefs.HasKey(SelectedCarKey) ? PlayerPrefs.GetInt(SelectedCarKey) : SelectedCarDefault;
             LoadConditionsForCars();
 
@@ -224,21 +263,40 @@ namespace Assets.Scripts.Data
             PlayerPrefs.Save();
         }
 
+        private string DetermineBrowserLanguage()
+        {
+#if UNITY_WEBGL && !UNITY_EDITOR
+            Debug.Log($"Lang: {YandexGamesSdk.Environment.i18n.lang}");
+            return Language.DefineLanguage(YandexGamesSdk.Environment.i18n.lang);
+#else
+            return Language.ENG;
+#endif
+        }
+        
+        [ContextMenu("Delete Data")]
+        public void DeleteData()
+        {
+            PlayerPrefs.DeleteKey(MoneyKey);
+            PlayerPrefs.DeleteKey(LevelKey);
+            PlayerPrefs.DeleteKey(MusicKey);
+            PlayerPrefs.DeleteKey(SFXKey);
+            PlayerPrefs.DeleteKey(LocalizationKey);
+            PlayerPrefs.DeleteKey(SelectedCarKey);
+            PlayerPrefs.DeleteKey(ConditionsForCarsKey);
+        }
 
-#if UNITY_EDITOR
         [ContextMenu("Reset Data")]
-        private void ResetData()
+        public void ResetData()
         {
             _money = MoneyDefault;
             _level = LevelDefault;
             _isMusicOn = MusicDefault;
             _isSFXOn = SFXDefault;
-            _currentLocalization = Language.ENG;
+            _currentLocalization = DetermineBrowserLanguage();
             _selectedCar = SelectedCarDefault;
             LoadConditionsFromPriceList();
             
             SaveData();
         }
-#endif
     }
 }

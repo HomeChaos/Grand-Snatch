@@ -18,7 +18,8 @@ namespace Assets.Scripts.UI
             _musicToggle.StateChange += OnMusicStateChange;
             _SFXToggle.StateChange += OnSFXStateChange;
             
-            _shopButton.onClick.AddListener(LoadShop);
+            if (_shopButton != null)
+                _shopButton.onClick.AddListener(LoadShop);
             _exitButton.onClick.AddListener(ExitGame);
             _closeButton.onClick.AddListener(CloseWindow);
             
@@ -36,7 +37,8 @@ namespace Assets.Scripts.UI
             _musicToggle.Dispose();
             _SFXToggle.Dispose();
             
-            _shopButton.onClick.RemoveListener(LoadShop);
+            if (_shopButton != null)
+                _shopButton.onClick.RemoveListener(LoadShop);
             _exitButton.onClick.RemoveListener(ExitGame);
             _closeButton.onClick.RemoveListener(CloseWindow);
             

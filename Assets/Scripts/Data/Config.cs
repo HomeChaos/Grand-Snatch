@@ -2,7 +2,7 @@
 
 namespace Assets.Scripts.Data
 {
-    [CreateAssetMenu(fileName = "GameConfig", menuName = "Config", order = 0)]
+    [CreateAssetMenu(fileName = "GameConfig", menuName = "Config", order = 52)]
     public class Config : ScriptableObject
     {
         [Header("Money")] 

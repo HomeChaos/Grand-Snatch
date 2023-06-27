@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using Agava.WebUtility;
-using Assets.Scripts.Data;
+﻿using Assets.Scripts.Data;
 using Assets.Scripts.MainCore.HumanScripts;
 using Assets.Scripts.MainCore.MinionScripts;
 using Assets.Scripts.Sounds;
@@ -13,7 +10,6 @@ namespace Assets.Scripts.MainCore
 {
     public class GameStart : MonoBehaviour
     {
-        [SerializeField] private PlayerData _playerData;
         [SerializeField] private GarageOfCars _garage;
         [SerializeField] private HumansSpawner _humansSpawner;
         [SerializeField] private GameSession _gameSession;
@@ -26,25 +22,12 @@ namespace Assets.Scripts.MainCore
 
         private void Awake()
         {
-            _playerData.Init();
-            StartCoroutine(WaitForLoadPlayerData());
+            ApplyGameSettings();
         }
 
         private void OnDestroy()
         {
-            _playerData.SaveData();
-        }
-
-        private IEnumerator WaitForLoadPlayerData()
-        {
-            var waitForEndOfFrame = new WaitForEndOfFrame();
-            
-            while (_playerData.IsDataLoaded == false)
-            {
-                yield return waitForEndOfFrame;
-            }
-            
-            ApplyGameSettings();
+            PlayerData.Instance.SaveData();
         }
 
         private void ApplyGameSettings()
