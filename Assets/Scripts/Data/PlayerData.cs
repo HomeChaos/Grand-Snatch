@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Agava.YandexGames;
 using Assets.Scripts.Shop;
@@ -62,14 +63,8 @@ namespace Assets.Scripts.Data
             }
             set
             {
-                if (value == 1 && (_level + value) == (_level + 1))
-                {
-                    _level = value;
-                }
-                else
-                {
-                    throw new RankException("Incorrect value of Level");
-                }
+                Debug.Log($"[level] {_level}; value = {value}");
+                _level = value;
             }
         }
 
@@ -146,12 +141,22 @@ namespace Assets.Scripts.Data
             {
                 DontDestroyOnLoad(this);
                 Instance = this;
-                LoadData();
+                StartCoroutine(WaitLoadYandexSDK());
             }
             else
             {
                 Destroy(gameObject);
             }       
+        }
+
+        private IEnumerator WaitLoadYandexSDK()
+        {
+            while (YandexGamesSdk.IsInitialized == false)
+            {
+                yield return null;
+            }
+            
+            LoadData();
         }
 
         private PlayerData GetExistsPlayerData()
@@ -198,7 +203,7 @@ namespace Assets.Scripts.Data
         {
             _config = Resources.Load<Config>("GameConfig");
             _money = PlayerPrefs.HasKey(MoneyKey) ? PlayerPrefs.GetInt(MoneyKey) : MoneyDefault;
-            _money = 12_345;
+            _money = 100_000;
             _level = PlayerPrefs.HasKey(LevelKey) ? PlayerPrefs.GetInt(LevelKey) : LevelDefault;
             _isMusicOn = PlayerPrefs.HasKey(MusicKey) ? Convert.ToBoolean(PlayerPrefs.GetInt(MusicKey)) : MusicDefault;
             _isSFXOn = PlayerPrefs.HasKey(SFXKey) ? Convert.ToBoolean(PlayerPrefs.GetInt(SFXKey)) : SFXDefault;
@@ -265,12 +270,15 @@ namespace Assets.Scripts.Data
 
         private string DetermineBrowserLanguage()
         {
-#if UNITY_WEBGL && !UNITY_EDITOR
-            Debug.Log($"Lang: {YandexGamesSdk.Environment.i18n.lang}");
-            return Language.DefineLanguage(YandexGamesSdk.Environment.i18n.lang);
-#else
-            return Language.ENG;
-#endif
+            try
+            {
+                Debug.Log($"Lang: {YandexGamesSdk.Environment.i18n.lang}");
+                return Language.DefineLanguage(YandexGamesSdk.Environment.i18n.lang);
+            }
+            catch (Exception e)
+            {
+                return Language.ENG;
+            }
         }
         
         [ContextMenu("Delete Data")]

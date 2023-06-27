@@ -36,7 +36,7 @@ namespace Assets.Scripts.UI
             _particle.Play();
             _textRevard.text = NumberSeparator.SplitNumber(PaymentSystem.Instance.EarningsPerLevel);
             UpdateLevel();
-            FillLeadboard();
+            Invoke(nameof(FillLeadboard), 2f);
         }
 
         private void OnDisable()
@@ -61,6 +61,8 @@ namespace Assets.Scripts.UI
                 PlayerData.Instance.Money = Int32.MaxValue;
             else
                 PlayerData.Instance.Money += additionalMoney;
+            
+            PlayerData.Instance.SaveData();
         }
 
         private void UpdateLevel()
@@ -68,6 +70,7 @@ namespace Assets.Scripts.UI
             PlayerData.Instance.Level += 1;
             _textLevel.text = PlayerData.Instance.Level.ToString();
             _yandexLeadboard.SetLeaderboardScore(PlayerData.Instance.Level);
+            PlayerData.Instance.SaveData();
         }
 
         private void FillLeadboard()
@@ -107,10 +110,20 @@ namespace Assets.Scripts.UI
             LeaderboardData newData = new LeaderboardData(
                 data.rank, 
                 Language.DefineLanguage(data.player.lang),
-                data.player.publicName,
+                GetName(data.player.publicName, data.player.uniqueID),
                 data.score);
 
             return newData;
+        }
+
+        private string GetName(string publicName, string uniqueID)
+        {
+            string name = publicName;
+            
+            if (string.IsNullOrEmpty(name))
+                name = $"Anonymous {uniqueID}";
+
+            return name;
         }
 
         private void LoadNextLevel()

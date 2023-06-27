@@ -43,6 +43,9 @@ namespace Assets.Scripts.UI
                     case 3:
                         _medal.sprite = medals.Bronze;
                         break;
+                    default:
+                        _medal.gameObject.SetActive(false);
+                        break;
                 }
             }
         }

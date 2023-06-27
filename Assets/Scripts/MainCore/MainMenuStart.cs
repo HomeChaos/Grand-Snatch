@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Agava.YandexGames;
 using Assets.Scripts.Data;
 using Assets.Scripts.Sounds;
 using Assets.Scripts.UI;
@@ -27,13 +28,10 @@ namespace Assets.Scripts.MainCore
 
         private IEnumerator WaitForYandexInitialize()
         {
-#if UNITY_WEBGL && !UNITY_EDITOR
             while (YandexGamesSdk.IsInitialized == false)
             {
                 yield return null;
             }
-#endif
-            yield return null;
 
             StartCoroutine(WaitForLoadPlayerData());
         }

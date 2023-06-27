@@ -1,5 +1,4 @@
-﻿using Assets.Scripts.MainCore;
-using Assets.Scripts.MainCore.MinionScripts;
+﻿using Assets.Scripts.MainCore.MinionScripts;
 using UnityEngine;
 
 namespace Assets.Scripts.Data

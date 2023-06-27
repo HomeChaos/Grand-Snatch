@@ -5,7 +5,7 @@ namespace Assets.Scripts.YandexSDK
 {
     public class YandexLeadboardSystem : MonoBehaviour
     {
-        private const string LeaderboardKey = "GrandSnatch";
+        private const string LeaderboardKey = "GrandSnatchLB";
         
         public void SetLeaderboardScore(int level)
         {
@@ -15,7 +15,6 @@ namespace Assets.Scripts.YandexSDK
         public LeaderboardEntryResponse[] GetLeaderboardEntries()
         {
             var usersLeaderboard = new LeaderboardEntryResponse[] {};
-            
             
             Leaderboard.GetEntries(LeaderboardKey, (result) =>
             {
