@@ -15,7 +15,6 @@ namespace Assets.Scripts.Shop
         [SerializeField] private MessageBox _messageBoxWatchAd;
         [SerializeField] private MessageBox _messageBoxBuy;
         [SerializeField] private MessageBox _messageBoxNotEnoughMoney;
-        [SerializeField] private Button _startButton;
         [SerializeField] private Button _exitButton;
 
         [Space] [Header("AD")]
@@ -33,7 +32,6 @@ namespace Assets.Scripts.Shop
             }
 
             _messageBoxBuy.IsConfirmAction -= ProcessingReceivedFromMessageBox;
-            _startButton.onClick.RemoveListener(StartGame);
             _exitButton.onClick.RemoveListener(Exit);
         }
 
@@ -50,13 +48,7 @@ namespace Assets.Scripts.Shop
                 _products.Add(product);
             }
             
-            _startButton.onClick.AddListener(StartGame);
             _exitButton.onClick.AddListener(Exit);
-        }
-
-        private void StartGame()
-        {
-            Level_1.Load();
         }
 
         private void Exit()
@@ -132,8 +124,8 @@ namespace Assets.Scripts.Shop
 
         private void OnRewarded()
         {
-            Debug.Log("[!] Я получил награду!");
             PlayerData.Instance.ChangeConditionForCar(_currentPrice.CarType);
+            PlayerData.Instance.SaveData();
             _currentProduct.UpdateCostText();
                     
             if (PlayerData.Instance.ConditionsForCars[_currentPrice.CarType] == 0)

@@ -12,7 +12,7 @@ namespace Assets.Scripts.MainCore
         private Vector2 _delta;
         private bool _isMoving;
         private float _moveStartTime;
-
+        
         private void LateUpdate()
         {
             if (_isMoving && (Time.time - _moveStartTime > _delayBeforeMoveing))

@@ -1,9 +1,9 @@
-﻿using TMPro;
-using UI.Localization;
+﻿using Assets.Scripts.UI.Localization;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Assets.Scripts.UI
+namespace Assets.Scripts.UI.LeaderboardSystem
 {
     public class LeaderboardItem : MonoBehaviour
     {
@@ -11,18 +11,22 @@ namespace Assets.Scripts.UI
         private readonly string _leaderboardCountryKey = "LeaderboardCountry";
 
         [SerializeField] private TMP_Text _level;
-        [SerializeField] private Image _medal;
-        [SerializeField] private Image _country;
         [SerializeField] private TMP_Text _nickName;
         [SerializeField] private TMP_Text _score;
+        [SerializeField] private Image _medal;
+        [SerializeField] private Image _country;
+        [SerializeField] private Image _profilePicture;
 
-        public void Init(LeaderboardData data)
+        public void Initialize(LeaderboardData data)
         {
-            _level.text = data.Level.ToString();
-            ChooseMedal(data.Level);
-            ChooseCountry(data.Language);
+            _level.text = data.Rank.ToString();
             _nickName.text = data.NickName;
             _score.text = data.Score.ToString();
+            
+            ChooseMedal(data.Rank);
+            ChooseCountry(data.Language);
+            //_profilePicture.sprite = data.Picture;
+            Debug.Log($"[profilePicture] {data.Picture}");
         }
 
         private void ChooseMedal(int level)

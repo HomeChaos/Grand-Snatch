@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Assets.Scripts.Data;
 using UnityEngine;
 
-namespace UI.Localization
+namespace Assets.Scripts.UI.Localization
 {
     public class LanguagesFlags : MonoBehaviour
     {
@@ -20,10 +20,8 @@ namespace UI.Localization
 
         private void OnEnable()
         {
-            Debug.Log("Start find language");
             foreach (var flag in _flags)
             {
-                Debug.Log($"{flag.Language} & {PlayerData.Instance.CurrentLocalization} = {flag.Language == PlayerData.Instance.CurrentLocalization}");
                 if (flag.Language == PlayerData.Instance.CurrentLocalization)
                 {
                     flag.SetIconActive(true);

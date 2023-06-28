@@ -6,7 +6,7 @@ namespace Assets.Scripts.MainCore.MinionScripts
     public class MinionSpawner : MonoBehaviour
     {
         [SerializeField] private Transform _car;
-        [SerializeField] private Booster _minionBooster;
+        [SerializeField] private Clicker _clicer;
         [SerializeField] private ItemManager _itemManager;
         [SerializeField] private GameObject _minionTemlate;
 
@@ -28,7 +28,7 @@ namespace Assets.Scripts.MainCore.MinionScripts
                 return;
 
             Minion minion = Instantiate(_minionTemlate, _car.position, Quaternion.identity, transform).GetComponent<Minion>();
-            minion.Init(_car.position, _minionBooster);
+            minion.Init(_car.position, _clicer);
             minion.OnSellItem += OnBroughtItem;
             minion.SetNewItem(_itemManager.GetNextItem());
             _minions.Add(minion);

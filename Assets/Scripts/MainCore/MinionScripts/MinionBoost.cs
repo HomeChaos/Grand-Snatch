@@ -11,22 +11,22 @@ namespace Assets.Scripts.MainCore.MinionScripts
         [SerializeField] private ParticleSystem _particleSystem;
 
         private NavMeshAgent _agent;
-        private Booster _booster;
+        private Clicker _clicker;
         
         private Coroutine _boost;
 
         private void OnDisable()
         {
-            if (_booster != null)
-                _booster.OnClick -= EnableBoost;
+            if (_clicker != null)
+                _clicker.OnClick -= EnableBoost;
         }
 
-        public void Init(NavMeshAgent agent, Booster booster)
+        public void Init(NavMeshAgent agent, Clicker clicker)
         {
             _agent = agent;
             _agent.speed = GameSession.Instance.MinionSpecifications.MinSpeed;
-            _booster = booster;
-            _booster.OnClick += EnableBoost;            
+            _clicker = clicker;
+            _clicker.OnClick += EnableBoost;            
         }
 
         public void UpdateSpeed()

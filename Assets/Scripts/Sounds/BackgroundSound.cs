@@ -17,7 +17,6 @@ namespace Assets.Scripts.Sounds
 
         private void ChangeBackgroundSounds(bool hidden)
         {
-            Debug.Log($"Hidden: {hidden}");
             if (hidden)
                 Sound.Instance.Pause();
             else

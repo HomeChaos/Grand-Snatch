@@ -1,22 +1,32 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Agava.YandexGames;
+using Assets.Scripts.Data;
+using IJunior.TypedScenes;
 
 namespace Assets.Scripts.YandexSDK
 {
     public class Yandex : MonoBehaviour
     {
+        [SerializeField] private PlayerData _playerData;
+        
         private void Awake()
         {
             YandexGamesSdk.CallbackLogging = true;
-            
-            if (YandexGamesSdk.IsInitialized == false)
-                StartCoroutine(OnStart());
         }
 
-        private IEnumerator OnStart()
+        private IEnumerator Start()
         {
-            yield return YandexGamesSdk.Initialize();
+#if UNITY_EDITOR
+            LoadPlayerData();
+            yield break;
+#endif
+            yield return YandexGamesSdk.Initialize(LoadPlayerData);
+        }
+
+        private void LoadPlayerData()
+        {
+            _playerData.Initialize();
         }
     }
 }

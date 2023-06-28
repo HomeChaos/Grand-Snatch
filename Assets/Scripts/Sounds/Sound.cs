@@ -18,14 +18,27 @@ namespace Assets.Scripts.Sounds
 
         private bool _isMusicOn;
         private bool _isSFXOn;
+        private bool _isHidden;
+        private CollectionOfSounds _currentBackgroundMusic = CollectionOfSounds.Win;
 
         private void Awake()
         {
+            CheckingForDuplicates();
+            
             if (Instance == null)
                 Instance = this;
+            
+            DontDestroyOnLoad(this);
 
             _backgroundMusic.loop = true;
             _backgroundSounds.loop = true;
+            _isHidden = false;
+            
+            _isMusicOn = PlayerData.Instance.IsMusicOn;
+            _isSFXOn = PlayerData.Instance.IsSFXOn;
+            
+            PlayerData.Instance.MusicStatusChange += OnMusicStatusChange;
+            PlayerData.Instance.SFXStatusChange += OnSFXStatusChange;
         }
 
         private void OnDisable()
@@ -42,39 +55,40 @@ namespace Assets.Scripts.Sounds
                 throw new System.ArgumentException("Warning! There should be no duplicates in the list of sounds when specifying types!");
         }
 
-        public void Init()
-        {
-            _isMusicOn = PlayerData.Instance.IsMusicOn;
-            _isSFXOn = PlayerData.Instance.IsSFXOn;
-            
-            PlayerData.Instance.MusicStatusChange += OnMusicStatusChange;
-            PlayerData.Instance.SFXStatusChange += OnSFXStatusChange;
-        }
-
         public void PlayBackgroundMusic(CollectionOfSounds type)
         {
-            PlayBackground(_backgroundMusic, type, _isMusicOn);
+            if (_currentBackgroundMusic != type)
+            {
+                _backgroundSounds.Stop();
+                _currentBackgroundMusic = type;
+                PlayBackground(_backgroundMusic, type, _isMusicOn);
+            }            
         }
-
-        public void PlayBackgroundSounds(CollectionOfSounds type)
+        public void PlayBackgroundMusic(CollectionOfSounds typeFirst, CollectionOfSounds typeSecond)
         {
-            PlayBackground(_backgroundSounds, type, _isSFXOn);
+            if (_currentBackgroundMusic != typeFirst)
+            {
+                _currentBackgroundMusic = typeFirst;
+                PlayBackground(_backgroundMusic, typeFirst, _isMusicOn);
+                PlayBackground(_backgroundSounds, typeSecond, _isSFXOn);
+            }
         }
 
         public void PlayUISFX(CollectionOfSounds type)
         {
-            if (_isSFXOn)
+            if (_isSFXOn && _isHidden == false)
                 Play(_UISfx, type);
         }
 
         public void PlaySFX(CollectionOfSounds type)
         {
-            if (_isSFXOn && _sfx.isPlaying == false)
+            if (_isSFXOn && _sfx.isPlaying == false && _isHidden == false)
                 Play(_sfx, type);
         }
 
         public void Pause()
         {
+            _isHidden = true;
             _backgroundMusic.Pause();
             _backgroundSounds.Pause();
             _UISfx.Pause();
@@ -83,10 +97,22 @@ namespace Assets.Scripts.Sounds
 
         public void UpPause()
         {
+            _isHidden = false;
             _backgroundMusic.UnPause();
             _backgroundSounds.UnPause();
             _UISfx.UnPause();
             _sfx.UnPause();
+        }
+
+        private void CheckingForDuplicates()
+        {
+            var sounds = FindObjectsOfType<Sound>();
+
+            foreach (var sound in sounds)
+            {
+                if (sound != this)
+                    Destroy(gameObject);
+            }
         }
 
         private void PlayBackground(AudioSource source, CollectionOfSounds type, bool isPlay)

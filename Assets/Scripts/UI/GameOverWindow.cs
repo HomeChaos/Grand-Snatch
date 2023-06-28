@@ -1,12 +1,12 @@
 ﻿using System;
-using Agava.YandexGames;
 using Assets.Scripts.Data;
+using Assets.Scripts.MainCore;
 using Assets.Scripts.Sounds;
 using Assets.Scripts.YandexSDK;
 using IJunior.TypedScenes;
 using TMPro;
-using UI.Localization;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.UI
@@ -14,35 +14,28 @@ namespace Assets.Scripts.UI
     public class GameOverWindow : MonoBehaviour
     {
         [SerializeField] private ParticleSystem _particle;
-
-        [Space] [Header("Panel Result")] 
         [SerializeField] private TMP_Text _textLevel;
         [SerializeField] private TMP_Text _textRevard;
+        [SerializeField] private Button _buttonNextLevel;
         [SerializeField] private Button _buttonIncreaseRevenue;
         [SerializeField] private YandexAd _yandexAd;
-
-        [Space] [Header("Panel Ranking")] 
-        [SerializeField] private Button _buttonNextLevel;
-        [SerializeField] private LeaderboardItem _playerRanking;
-        [SerializeField] private GameObject _leaderboardItemTemplate;
-        [SerializeField] private GameObject _content;
-        [SerializeField] private YandexLeadboardSystem _yandexLeadboard;
+        [SerializeField] private CameraMovement _cameraMovement;
 
         private void OnEnable()
         {
+            _cameraMovement.enabled = false;
             Sound.Instance.PlayUISFX(CollectionOfSounds.Win);
-            _buttonIncreaseRevenue.onClick.AddListener(WatchAdForMultiplicationOfReward);
             _buttonNextLevel.onClick.AddListener(LoadNextLevel);
+            _buttonIncreaseRevenue.onClick.AddListener(WatchAdForMultiplicationOfReward);
             _particle.Play();
             _textRevard.text = NumberSeparator.SplitNumber(PaymentSystem.Instance.EarningsPerLevel);
             UpdateLevel();
-            Invoke(nameof(FillLeadboard), 2f);
         }
 
         private void OnDisable()
         {
-            _buttonIncreaseRevenue.onClick.RemoveListener(WatchAdForMultiplicationOfReward);
             _buttonNextLevel.onClick.RemoveListener(LoadNextLevel);
+            _buttonIncreaseRevenue.onClick.RemoveListener(WatchAdForMultiplicationOfReward);
         }
 
         private void WatchAdForMultiplicationOfReward()
@@ -52,7 +45,6 @@ namespace Assets.Scripts.UI
         
         private void OnRewarded()
         {
-            Debug.Log("[!] Я получил награду!");
             int additionalMoney = PaymentSystem.Instance.EarningsPerLevel;
             _textRevard.text = NumberSeparator.SplitNumber(PaymentSystem.Instance.EarningsPerLevel * 2);
             _buttonIncreaseRevenue.gameObject.SetActive(false);
@@ -69,67 +61,13 @@ namespace Assets.Scripts.UI
         {
             PlayerData.Instance.Level += 1;
             _textLevel.text = PlayerData.Instance.Level.ToString();
-            _yandexLeadboard.SetLeaderboardScore(PlayerData.Instance.Level);
             PlayerData.Instance.SaveData();
-        }
-
-        private void FillLeadboard()
-        {
-            FillLeadboradOfPlayer();
-            FillLeadboradOfPlayers();
-        }
-
-        private void FillLeadboradOfPlayer()
-        {
-            var leaderboardPlayerEntry = _yandexLeadboard.GetLeaderboardPlayerEntry();
-            var playerData = ConvertLeaderboradData(leaderboardPlayerEntry);
-            _playerRanking.Init(playerData);
-        }
-
-        private void FillLeadboradOfPlayers()
-        {
-            var entries = _yandexLeadboard.GetLeaderboardEntries();
-            int maxNumberOfRecords = 10;
-            int currentNumberOfRecords = 0;
-
-            foreach (var entry in entries)
-            {
-                var playerData = ConvertLeaderboradData(entry);
-                var item = Instantiate(_leaderboardItemTemplate, _content.transform).GetComponent<LeaderboardItem>();
-                item.Init(playerData);
-
-                currentNumberOfRecords++;
-                
-                if (currentNumberOfRecords == maxNumberOfRecords)
-                    break;
-            }
-        }
-
-        private LeaderboardData ConvertLeaderboradData(LeaderboardEntryResponse data)
-        {
-            LeaderboardData newData = new LeaderboardData(
-                data.rank, 
-                Language.DefineLanguage(data.player.lang),
-                GetName(data.player.publicName, data.player.uniqueID),
-                data.score);
-
-            return newData;
-        }
-
-        private string GetName(string publicName, string uniqueID)
-        {
-            string name = publicName;
-            
-            if (string.IsNullOrEmpty(name))
-                name = $"Anonymous {uniqueID}";
-
-            return name;
         }
 
         private void LoadNextLevel()
         {
             PlayerData.Instance.SaveData();
-            Level_1.Load();
+            _yandexAd.OnShowInterstitial(() => Level_1.Load());
         }
     }
 }

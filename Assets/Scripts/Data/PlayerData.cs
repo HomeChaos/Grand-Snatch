@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using Agava.YandexGames;
 using Assets.Scripts.Shop;
-using UI.Localization;
+using Assets.Scripts.UI.Localization;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -38,6 +37,7 @@ namespace Assets.Scripts.Data
 
         public Config Config => _config;
 
+        #region Propertys        
         public int Money
         {
             get
@@ -63,7 +63,6 @@ namespace Assets.Scripts.Data
             }
             set
             {
-                Debug.Log($"[level] {_level}; value = {value}");
                 _level = value;
             }
         }
@@ -125,51 +124,18 @@ namespace Assets.Scripts.Data
 
         public IReadOnlyDictionary<CarType, int> ConditionsForCars => _conditionsForCars;
 
-        public bool IsDataLoaded { get; private set; } = false;
-
         public event UnityAction MusicStatusChange;
         public event UnityAction SFXStatusChange;
         public event UnityAction<int> MoneyChanged;
         public event UnityAction<string> LanguageChange;
 
+        #endregion
 
-        private void Awake()
+        public void Initialize()
         {
-            var existsPlayerData = GetExistsPlayerData();
-
-            if (existsPlayerData == null)
-            {
-                DontDestroyOnLoad(this);
-                Instance = this;
-                StartCoroutine(WaitLoadYandexSDK());
-            }
-            else
-            {
-                Destroy(gameObject);
-            }       
-        }
-
-        private IEnumerator WaitLoadYandexSDK()
-        {
-            while (YandexGamesSdk.IsInitialized == false)
-            {
-                yield return null;
-            }
-            
+            Instance = this;
+            DontDestroyOnLoad(this);
             LoadData();
-        }
-
-        private PlayerData GetExistsPlayerData()
-        {
-            var playerData = FindObjectsOfType<PlayerData>();
-            
-            foreach (var data in playerData)
-            {
-                if (data != this) 
-                    return data;
-            }
-            
-            return null;
         }
 
         public void Dispose()
@@ -197,7 +163,33 @@ namespace Assets.Scripts.Data
 
             PlayerPrefs.Save();
         }
-        
+
+
+        [ContextMenu("Delete Data")]
+        public void DeleteData()
+        {
+            PlayerPrefs.DeleteKey(MoneyKey);
+            PlayerPrefs.DeleteKey(LevelKey);
+            PlayerPrefs.DeleteKey(MusicKey);
+            PlayerPrefs.DeleteKey(SFXKey);
+            PlayerPrefs.DeleteKey(LocalizationKey);
+            PlayerPrefs.DeleteKey(SelectedCarKey);
+            PlayerPrefs.DeleteKey(ConditionsForCarsKey);
+        }
+
+        [ContextMenu("Reset Data")]
+        public void ResetData()
+        {
+            _money = MoneyDefault;
+            _level = LevelDefault;
+            _isMusicOn = MusicDefault;
+            _isSFXOn = SFXDefault;
+            _currentLocalization = DetermineBrowserLanguage();
+            _selectedCar = SelectedCarDefault;
+            LoadConditionsFromPriceList();
+            
+            SaveData();
+        }
 
         private void LoadData()
         {
@@ -211,7 +203,12 @@ namespace Assets.Scripts.Data
             _selectedCar = PlayerPrefs.HasKey(SelectedCarKey) ? PlayerPrefs.GetInt(SelectedCarKey) : SelectedCarDefault;
             LoadConditionsForCars();
 
-            IsDataLoaded = true;
+            LoadMainMenu();
+        }
+        
+        private void LoadMainMenu()
+        {
+            IJunior.TypedScenes.MainMenu.Load();
         }
 
         private void LoadConditionsForCars()
@@ -270,41 +267,10 @@ namespace Assets.Scripts.Data
 
         private string DetermineBrowserLanguage()
         {
-            try
-            {
-                Debug.Log($"Lang: {YandexGamesSdk.Environment.i18n.lang}");
-                return Language.DefineLanguage(YandexGamesSdk.Environment.i18n.lang);
-            }
-            catch (Exception e)
-            {
-                return Language.ENG;
-            }
-        }
-        
-        [ContextMenu("Delete Data")]
-        public void DeleteData()
-        {
-            PlayerPrefs.DeleteKey(MoneyKey);
-            PlayerPrefs.DeleteKey(LevelKey);
-            PlayerPrefs.DeleteKey(MusicKey);
-            PlayerPrefs.DeleteKey(SFXKey);
-            PlayerPrefs.DeleteKey(LocalizationKey);
-            PlayerPrefs.DeleteKey(SelectedCarKey);
-            PlayerPrefs.DeleteKey(ConditionsForCarsKey);
-        }
-
-        [ContextMenu("Reset Data")]
-        public void ResetData()
-        {
-            _money = MoneyDefault;
-            _level = LevelDefault;
-            _isMusicOn = MusicDefault;
-            _isSFXOn = SFXDefault;
-            _currentLocalization = DetermineBrowserLanguage();
-            _selectedCar = SelectedCarDefault;
-            LoadConditionsFromPriceList();
-            
-            SaveData();
+#if !UNITY_EDITOR
+            return Language.DefineLanguage(YandexGamesSdk.Environment.i18n.lang);
+#endif
+            return Language.ENG;
         }
     }
 }

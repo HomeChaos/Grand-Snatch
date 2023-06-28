@@ -2,7 +2,7 @@
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace UI.Localization
+namespace Assets.Scripts.UI.Localization
 {
     [RequireComponent(typeof(Button))]
     public class Flag : MonoBehaviour

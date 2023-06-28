@@ -3,7 +3,7 @@ using Assets.Scripts.Data;
 using Lean.Localization;
 using UnityEngine;
 
-namespace UI.Localization
+namespace Assets.Scripts.UI.Localization
 {
     [RequireComponent(typeof(LeanLocalization))]
     public class Localizer : MonoBehaviour

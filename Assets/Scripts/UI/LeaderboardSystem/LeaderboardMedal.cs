@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Assets.Scripts.UI
+namespace Assets.Scripts.UI.LeaderboardSystem
 {
     [CreateAssetMenu(fileName = "Leaderboard Medal", menuName = "Leaderboard/Medal", order = 52)]
     public class LeaderboardMedal : ScriptableObject

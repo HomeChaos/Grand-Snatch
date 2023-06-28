@@ -1,4 +1,4 @@
-﻿namespace UI.Localization
+﻿namespace Assets.Scripts.UI.Localization
 {
     public static class Language
     {

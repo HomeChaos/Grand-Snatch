@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/_LoadYandexSDK.unity
+    guid: 5412910a851bc23429fbe358a67930b9
+  - enabled: 1
     path: Assets/Scenes/MainMenu.unity
     guid: ffd4cf385a782d9498cc3f8b39b7f391
   - enabled: 1
