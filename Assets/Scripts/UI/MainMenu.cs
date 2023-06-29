@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.MainCore;
+using UnityEngine;
 using UnityEngine.UI;
 using IJunior.TypedScenes;
 using TMPro;
@@ -9,6 +10,7 @@ namespace Assets.Scripts.UI
     {
         [SerializeField] private Button _start;
         [SerializeField] private Button _shop;
+        [SerializeField] private LevelManager _levelManager;
         [SerializeField] private TMP_Text _version;
 
         private void Awake()
@@ -26,7 +28,7 @@ namespace Assets.Scripts.UI
 
         private void StartGame()
         {
-            Level_1.Load();
+            _levelManager.LoadNextLevel();
         }
 
         private void ShowShop()

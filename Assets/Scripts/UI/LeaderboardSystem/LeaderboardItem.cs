@@ -1,6 +1,8 @@
-﻿using Assets.Scripts.UI.Localization;
+﻿using System.Collections;
+using Assets.Scripts.UI.Localization;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.UI.LeaderboardSystem
@@ -10,7 +12,7 @@ namespace Assets.Scripts.UI.LeaderboardSystem
         private readonly string _leaderboardMedalKey = "LeaderboardMedal";
         private readonly string _leaderboardCountryKey = "LeaderboardCountry";
 
-        [SerializeField] private TMP_Text _level;
+        [SerializeField] private TMP_Text _rank;
         [SerializeField] private TMP_Text _nickName;
         [SerializeField] private TMP_Text _score;
         [SerializeField] private Image _medal;
@@ -19,14 +21,13 @@ namespace Assets.Scripts.UI.LeaderboardSystem
 
         public void Initialize(LeaderboardData data)
         {
-            _level.text = data.Rank.ToString();
+            _rank.text = data.Rank.ToString();
             _nickName.text = data.NickName;
             _score.text = data.Score.ToString();
             
             ChooseMedal(data.Rank);
             ChooseCountry(data.Language);
-            //_profilePicture.sprite = data.Picture;
-            Debug.Log($"[profilePicture] {data.Picture}");
+            StartCoroutine(SetProfileImage(data.Picture));
         }
 
         private void ChooseMedal(int level)
@@ -71,5 +72,22 @@ namespace Assets.Scripts.UI.LeaderboardSystem
                     break;
             }
         }
+
+        private IEnumerator SetProfileImage(string url)
+        {   
+            UnityWebRequest request = UnityWebRequestTexture.GetTexture(url);
+            yield return request.SendWebRequest();
+            
+            if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
+            {
+                Debug.Log($"[download image error] {request.error}");
+            }
+            else
+            {
+                var texture = ((DownloadHandlerTexture) request.downloadHandler).texture;
+                var sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
+                _profilePicture.sprite = sprite;
+            }
+        } 
     }
 }

@@ -3,6 +3,7 @@ using Assets.Scripts.Data;
 using Assets.Scripts.MainCore;
 using Assets.Scripts.Sounds;
 using Assets.Scripts.YandexSDK;
+using DefaultNamespace;
 using IJunior.TypedScenes;
 using TMPro;
 using UnityEngine;
@@ -20,6 +21,7 @@ namespace Assets.Scripts.UI
         [SerializeField] private Button _buttonIncreaseRevenue;
         [SerializeField] private YandexAd _yandexAd;
         [SerializeField] private CameraMovement _cameraMovement;
+        [SerializeField] private LevelManager _levelManager;
 
         private void OnEnable()
         {
@@ -28,7 +30,7 @@ namespace Assets.Scripts.UI
             _buttonNextLevel.onClick.AddListener(LoadNextLevel);
             _buttonIncreaseRevenue.onClick.AddListener(WatchAdForMultiplicationOfReward);
             _particle.Play();
-            _textRevard.text = NumberSeparator.SplitNumber(PaymentSystem.Instance.EarningsPerLevel);
+            _textRevard.text = $"+{NumberSeparator.SplitNumber(PaymentSystem.Instance.EarningsPerLevel)} $";
             UpdateLevel();
         }
 
@@ -67,7 +69,7 @@ namespace Assets.Scripts.UI
         private void LoadNextLevel()
         {
             PlayerData.Instance.SaveData();
-            _yandexAd.OnShowInterstitial(() => Level_1.Load());
+            _yandexAd.OnShowInterstitial(() => _levelManager.LoadNextLevel());
         }
     }
 }

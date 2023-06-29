@@ -475,7 +475,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86f391510a754441861f49e1923855d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _level: {fileID: 4481219966615772204}
+  _rank: {fileID: 4481219966615772204}
   _nickName: {fileID: 6372072176031479747}
   _score: {fileID: 7175926428395269631}
   _medal: {fileID: 6872871928503312164}
