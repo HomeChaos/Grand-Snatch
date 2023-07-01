@@ -77,9 +77,9 @@ namespace Assets.Scripts.Data
 
         private void InitValueForBuy()
         {
-            _addMinion.BoostKey.SetValues(1, _gameSession.MinionCost);
-            _addSpeed.BoostKey.SetValues(_gameSession.MinionSpeedLevel, _gameSession.SpeedCost);
-            _income.BoostKey.SetValues(_gameSession.IncomeLevel, _gameSession.CostOfUpdateItem);
+            _addMinion.ImprovementButton.SetValues(1, _gameSession.MinionCost);
+            _addSpeed.ImprovementButton.SetValues(_gameSession.MinionSpeedLevel, _gameSession.SpeedCost);
+            _income.ImprovementButton.SetValues(_gameSession.IncomeLevel, _gameSession.IncomeCost);
         }
 
         private bool TryPay(int payment)
@@ -102,8 +102,8 @@ namespace Assets.Scripts.Data
                 {
                     _minionSpawner.AddMinion();
                     _gameSession.UpdateMinionCost();
-                    _addMinion.BoostKey.SetValues(_minionSpawner.CountOfMinions, _gameSession.MinionCost);
-                    _addMinion.BoostKey.Particle.Play();
+                    _addMinion.ImprovementButton.SetValues(_minionSpawner.CountOfMinions, _gameSession.MinionCost);
+                    _addMinion.ImprovementButton.Particle.Play();
                 }
                 else
                 {
@@ -123,8 +123,8 @@ namespace Assets.Scripts.Data
                 _gameSession.MinionSpecifications.AddSpeed();
                 _gameSession.UpdateSpeedCost();
                 _minionSpawner.AddSpeed();
-                _addSpeed.BoostKey.SetValues(_gameSession.MinionSpeedLevel, _gameSession.SpeedCost);
-                _addSpeed.BoostKey.Particle.Play();
+                _addSpeed.ImprovementButton.SetValues(_gameSession.MinionSpeedLevel, _gameSession.SpeedCost);
+                _addSpeed.ImprovementButton.Particle.Play();
             }
             else
             {
@@ -134,11 +134,11 @@ namespace Assets.Scripts.Data
 
         private void AddIncome()
         {
-            if (TryPay(_gameSession.CostOfUpdateItem))
+            if (TryPay(_gameSession.IncomeCost))
             {
                 _gameSession.UpdateItemCost();
-                _income.BoostKey.SetValues(_gameSession.IncomeLevel, _gameSession.CostOfUpdateItem);
-                _income.BoostKey.Particle.Play();
+                _income.ImprovementButton.SetValues(_gameSession.IncomeLevel, _gameSession.IncomeCost);
+                _income.ImprovementButton.Particle.Play();
             }
             else
             {
@@ -151,9 +151,9 @@ namespace Assets.Scripts.Data
     public class ProductItem
     {
         [SerializeField] private Button _button;
-        [SerializeField] private BoostKey boostKey;
+        [SerializeField] private ImprovementButton improvementButton;
 
         public Button Button => _button;
-        public BoostKey BoostKey => boostKey;
+        public ImprovementButton ImprovementButton => improvementButton;
     }
 }

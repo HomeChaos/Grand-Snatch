@@ -2,7 +2,6 @@
 using System.Collections;
 using Agava.YandexGames;
 using Assets.Scripts.Data;
-using IJunior.TypedScenes;
 
 namespace Assets.Scripts.YandexSDK
 {

@@ -13,7 +13,7 @@ namespace Assets.Scripts.MainCore.MinionScripts
         public float MinSpeed => _minSpeed;
         public float MaxSpeed => _maxSpeed;
 
-        public MinionSpecifications(int startSpeed)
+        public MinionSpecifications(int startSpeed = 0)
         {
             var minionSpeed = startSpeed + RatioOfSpeedToLevel;
             _minSpeed = minionSpeed - PlayerData.Instance.Config.MinionSpeedRange;

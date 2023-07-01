@@ -195,7 +195,6 @@ namespace Assets.Scripts.Data
         {
             _config = Resources.Load<Config>("GameConfig");
             _money = PlayerPrefs.HasKey(MoneyKey) ? PlayerPrefs.GetInt(MoneyKey) : MoneyDefault;
-            _money = 100_000;
             _level = PlayerPrefs.HasKey(LevelKey) ? PlayerPrefs.GetInt(LevelKey) : LevelDefault;
             _isMusicOn = PlayerPrefs.HasKey(MusicKey) ? Convert.ToBoolean(PlayerPrefs.GetInt(MusicKey)) : MusicDefault;
             _isSFXOn = PlayerPrefs.HasKey(SFXKey) ? Convert.ToBoolean(PlayerPrefs.GetInt(SFXKey)) : SFXDefault;
@@ -267,9 +266,8 @@ namespace Assets.Scripts.Data
 
         private string DetermineBrowserLanguage()
         {
-#if !UNITY_EDITOR
-            return Language.DefineLanguage(YandexGamesSdk.Environment.i18n.lang);
-#endif
+            if (Application.isEditor == false)
+                return Language.DefineLanguage(YandexGamesSdk.Environment.i18n.lang);
             return Language.ENG;
         }
     }

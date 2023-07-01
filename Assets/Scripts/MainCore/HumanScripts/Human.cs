@@ -42,13 +42,22 @@ namespace Assets.Scripts.MainCore.HumanScripts
         {
             if (_isRunningToExit == false)
             {
-                Sound.Instance.PlaySFX(CollectionOfSounds.ScreamMan);
+                Sound.Instance.PlaySFX(GetRandomCream());
                 _emoji.Play();
                 _isRunningToExit = true;
                 _animator.SetTrigger(_runKey);
                 _agent.speed = 4;
                 StartState(GoToPoint(_exitPoint.position));
             }
+        }
+
+        private CollectionOfSounds GetRandomCream()
+        {
+            int randomValue = Random.Range(0, 2);
+
+            if (randomValue == 0)
+                return CollectionOfSounds.ScreamMan;
+            return CollectionOfSounds.ScreamWoman;
         }
 
         private IEnumerator GoToPoint(Vector3 point)

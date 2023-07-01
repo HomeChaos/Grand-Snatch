@@ -2492,6 +2492,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 275378811758188344, guid: d11a9c237187df9438d41783e4e74e78, type: 3}
+      propertyPath: _soundItems.Array.data[6]._volume
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 275378811758188344, guid: d11a9c237187df9438d41783e4e74e78, type: 3}
+      propertyPath: _soundItems.Array.data[7]._volume
+      value: 0.3
+      objectReference: {fileID: 0}
     - target: {fileID: 275378811758188346, guid: d11a9c237187df9438d41783e4e74e78, type: 3}
       propertyPath: m_Name
       value: Sound

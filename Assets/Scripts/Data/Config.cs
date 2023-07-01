@@ -13,12 +13,12 @@ namespace Assets.Scripts.Data
         [Header("Starting price of update")] 
         [SerializeField] private int _startMinionCost = 10;
         [SerializeField] private int _startSpeedCost = 11;
-        [SerializeField] private int _startCostOfUpdateItem = 11;
+        [SerializeField] private int _startCostIncome = 11;
         
         [Header("Calculate new cost for update")] 
         [SerializeField] private float _factorMinionCost = 1.5f;
         [SerializeField] private float _factorSpeedCost = 2.5f;
-        [SerializeField] private float _factorItemCost = 3.7f;
+        [SerializeField] private float _factorIncome = 3.7f;
 
         [Header("Minion Specifications")] 
         [SerializeField] private int _minionSpeedRange = 2;
@@ -39,7 +39,7 @@ namespace Assets.Scripts.Data
 
         public float FactorSpeedCost => _factorSpeedCost;
 
-        public float FactorItemCost => _factorItemCost;
+        public float FactorIncome => _factorIncome;
 
         public int RatioOfMoneyToLevel => _ratioOfMoneyToLevel;
 
@@ -47,7 +47,7 @@ namespace Assets.Scripts.Data
 
         public int StartSpeedCost => _startSpeedCost;
 
-        public int StartCostOfUpdateItem => _startCostOfUpdateItem;
+        public int StartCostIncome => _startCostIncome;
 
         public int MinMoneyRange => _minMoneyRange;
 

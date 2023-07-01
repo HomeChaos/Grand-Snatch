@@ -11922,6 +11922,7 @@ MonoBehaviour:
   - {fileID: 660365431}
   - {fileID: 409943391}
   - {fileID: 1567249134}
+  _delayBeforeStart: 2
   _delayAfterShowing: 5
 --- !u!1 &387438075
 GameObject:
@@ -32373,13 +32374,13 @@ MonoBehaviour:
   _sellItemParticle: {fileID: 437664616}
   _addMinion:
     _button: {fileID: 7019244178263988769}
-    boostKey: {fileID: 7019244178263988768}
+    improvementButton: {fileID: 7019244178263988768}
   _addSpeed:
     _button: {fileID: 722492546}
-    boostKey: {fileID: 722492543}
+    improvementButton: {fileID: 722492543}
   _income:
     _button: {fileID: 262997781}
-    boostKey: {fileID: 262997778}
+    improvementButton: {fileID: 262997778}
 --- !u!114 &1528058068
 MonoBehaviour:
   m_ObjectHideFlags: 0

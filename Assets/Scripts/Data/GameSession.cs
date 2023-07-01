@@ -11,7 +11,7 @@ namespace Assets.Scripts.Data
         private int _minionCostLevel;
         private int _speedCost;
         private int _minionSpeedLevel;
-        private int _costOfUpdateItem;
+        private int _incomeCost;
         private int _incomeLevel = 1;
 
         private MinionSpecifications _minionSpecifications;
@@ -20,7 +20,7 @@ namespace Assets.Scripts.Data
         public int SpeedCost => _speedCost;
         public int MinionSpeedLevel => _minionSpeedLevel;
         public int CostOfSaleItem => _incomeLevel * PlayerData.Instance.Config.RatioOfMoneyToLevel;
-        public int CostOfUpdateItem => _costOfUpdateItem;
+        public int IncomeCost => _incomeCost;
         public int IncomeLevel => _incomeLevel;
         public MinionSpecifications MinionSpecifications => _minionSpecifications;
 
@@ -28,28 +28,34 @@ namespace Assets.Scripts.Data
         {
             if (Instance == null)
                 Instance = this;
-            
+
             _minionCost = PlayerData.Instance.Config.StartMinionCost;
             _speedCost = PlayerData.Instance.Config.StartSpeedCost;
-            _costOfUpdateItem = PlayerData.Instance.Config.StartCostOfUpdateItem;
-            _minionSpecifications = new MinionSpecifications(0);
+            _incomeCost = PlayerData.Instance.Config.StartCostIncome;
+            _minionSpecifications = new MinionSpecifications();
         }
 
         public void UpdateMinionCost()
         {
-            _minionCost += (int) (Mathf.Pow(2, _minionCostLevel) * (int) (PlayerData.Instance.Level * PlayerData.Instance.Config.FactorMinionCost));
+            var level = PlayerData.Instance.Level;
+            var config = PlayerData.Instance.Config;
+            _minionCost += (int) (Mathf.Pow(2, _minionCostLevel) * (int) (level * config.FactorMinionCost));
             _minionCostLevel++;
         }
 
         public void UpdateSpeedCost()
         {
-            _speedCost += (int) (Mathf.Pow(2, _minionSpeedLevel) * (int) (PlayerData.Instance.Level * PlayerData.Instance.Config.FactorSpeedCost));
+            var level = PlayerData.Instance.Level;
+            var config = PlayerData.Instance.Config;
+            _speedCost += (int) (Mathf.Pow(2, _minionSpeedLevel) * (int) (level * config.FactorSpeedCost));
             _minionSpeedLevel++;
         }
 
         public void UpdateItemCost()
         {
-            _costOfUpdateItem += (int) (Mathf.Pow(2, _incomeLevel) * (int) (PlayerData.Instance.Level * PlayerData.Instance.Config.FactorItemCost));
+            var level = PlayerData.Instance.Level;
+            var config = PlayerData.Instance.Config;
+            _incomeCost += (int) (Mathf.Pow(2, _incomeLevel) * (int) (level * config.FactorIncome));
             _incomeLevel++;
         }
     }

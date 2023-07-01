@@ -10,13 +10,14 @@ namespace Assets.Scripts.MainCore.Toturials
     public class Tutorial : MonoBehaviour
     {
         [SerializeField] private List<TutorialAction> _actions;
+        [SerializeField] private float _delayBeforeStart;
         [SerializeField][Range(1f, 10f)] private float _delayAfterShowing = 5f;
 
         private int _currentNumberOfTutorial = 0;
 
         private void Start()
         {
-            ActivateTutorial();
+            Invoke(nameof(ActivateTutorial), _delayBeforeStart);
         }
 
         private void OnDestroy()

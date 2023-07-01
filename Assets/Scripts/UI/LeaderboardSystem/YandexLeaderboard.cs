@@ -22,6 +22,7 @@ namespace Assets.Scripts.UI.LeaderboardSystem
         {
             _showLeaderboard.onClick.AddListener(ShowLeaderboard);
             _closeLeaderboard.onClick.AddListener(CloseLeaderboard);
+           
         }
 
         private void OnDisable()
@@ -42,18 +43,30 @@ namespace Assets.Scripts.UI.LeaderboardSystem
             _leaderboardView.gameObject.SetActive(true);
             if (_cameraMovement != null)
                 _cameraMovement.enabled = false;
+            Debug.Log("Authorized on");
             Authorized();
+            Debug.Log("Authorized off");
+            Debug.Log("AddPlayerToLeaderboard on");
             AddPlayerToLeaderboard();
+            Debug.Log("AddPlayerToLeaderboard off");
+            Debug.Log("FormListOfPlayers on");
             FormListOfPlayers();
+            Debug.Log("FormListOfPlayers off");
+            Debug.Log("DisplayPlayersResults on");
             DisplayPlayersResults();
+            Debug.Log("DisplayPlayersResults off");
         }
 
         private void Authorized()
         {
             PlayerAccount.Authorize();
-
+            Debug.Log("Authorized yes");
             if (PlayerAccount.IsAuthorized)
+            {
+                Debug.Log("RequestPersonalProfileDataPermission on");
                 PlayerAccount.RequestPersonalProfileDataPermission();
+                Debug.Log("RequestPersonalProfileDataPermission off");
+            }
         }
         
         private void AddPlayerToLeaderboard()
@@ -74,13 +87,23 @@ namespace Assets.Scripts.UI.LeaderboardSystem
             
             Leaderboard.GetPlayerEntry(LeaderboardKey, (result) =>
             {
-                int rank = result.rank;
-                string language = result.player.lang;
-                string nickName = GetName(result.player.publicName);
-                int score = result.score;
-                string picture = result.player.profilePicture;
+                if (result == null || result.player == null)
+                {
+                    _playerRanking.Initialize(new LeaderboardData(
+                        0, PlayerData.Instance.CurrentLocalization, 
+                        "Anonymous", 
+                        PlayerData.Instance.Level, ""));
+                }
+                else
+                {
+                    int rank = result.rank;
+                    string language = result.player.lang;
+                    string nickName = GetName(result.player.publicName);
+                    int score = result.score;
+                    string picture = result.player.profilePicture;
                 
-                _playerRanking.Initialize(new LeaderboardData(rank, language, nickName, score, picture));
+                    _playerRanking.Initialize(new LeaderboardData(rank, language, nickName, score, picture));
+                }
             });
         }
 
