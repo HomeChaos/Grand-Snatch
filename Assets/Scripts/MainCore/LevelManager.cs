@@ -31,16 +31,18 @@ namespace Assets.Scripts.MainCore
         private void ChoseNextLevel(int currentLevel)
         {
             if (_levels.ContainsKey(currentLevel))
-            {
                 _levels[currentLevel]();
-            }
             else
-            {
-                var levelKeys = _levels.Keys.ToArray();
-                var randomIndex = Random.Range(0, levelKeys.Length);
-                var numberOfLevel = levelKeys[randomIndex];
-                _levels[numberOfLevel]();
-            }
+                ChoseRandomLevel();
+        }
+
+        private void ChoseRandomLevel()
+        {
+            var levelKeys = _levels.Keys.ToArray();
+            var randomIndex = Random.Range(0, levelKeys.Length);
+            var numberOfLevel = levelKeys[randomIndex];
+            
+            _levels[numberOfLevel]();
         }
     }
 }

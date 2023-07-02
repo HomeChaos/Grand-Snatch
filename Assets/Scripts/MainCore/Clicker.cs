@@ -10,22 +10,23 @@ namespace Assets.Scripts.MainCore
         [SerializeField] private float _delayAfterClick = 0.5f;
 
         private float _lastTimeClick = 0f;
-        private bool _pointerOverUI;
+        private bool _pointerOverUi;
         private bool _isFirstClick = true;
 
-        public event UnityAction OnClick;       
+        public event UnityAction OnClick;
+
+        private void FixedUpdate()
+        {
+            _pointerOverUi = EventSystem.current.IsPointerOverGameObject();
+        }
 
         public void Click(InputAction.CallbackContext context)
         {
-            if (_pointerOverUI)
-            {
+            if (_pointerOverUi)
                 return;
-            }
             
             if (Time.time - _lastTimeClick > _delayAfterClick)
-            {
                 _isFirstClick = true;
-            }
             
             if (context.started)
             {
@@ -37,16 +38,11 @@ namespace Assets.Scripts.MainCore
                 {
                     _isFirstClick = false;
                 }
-                else if(_pointerOverUI == false && Time.time - _lastTimeClick < _delayAfterClick)
+                else if(_pointerOverUi == false && Time.time - _lastTimeClick < _delayAfterClick)
                 {
                     OnClick?.Invoke();
                 }
             }
-        }
-
-        private void FixedUpdate()
-        {
-            _pointerOverUI = EventSystem.current.IsPointerOverGameObject();
         }
     }
 }

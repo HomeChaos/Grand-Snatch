@@ -14,7 +14,7 @@ namespace Assets.Scripts.Data
     public class PaymentSystem : MonoBehaviour
     {
         public static PaymentSystem Instance { get; private set; }
-        
+
         [SerializeField] private MinionSpawner _minionSpawner;
         [SerializeField] private ItemManager _itemManager;
         [SerializeField] private ParticleSystem _sellItemParticle;
@@ -24,15 +24,22 @@ namespace Assets.Scripts.Data
 
         private GameSession _gameSession;
         private PaymentInformant _informant;
-        
+
         private int _countSoldItems;
         private int _earningsPerLevel = 0;
-        
+
         public int MaxCountOfItems => _itemManager.MaxCountOfItems;
         public int EarningsPerLevel => _earningsPerLevel;
 
         public event UnityAction<int, int> ItemSold;
         public event UnityAction AllItemsSold;
+
+        private void OnDestroy()
+        {
+            _addMinion.Button.onClick.RemoveListener(AddMinion);
+            _addSpeed.Button.onClick.RemoveListener(AddSpeed);
+            _income.Button.onClick.RemoveListener(AddIncome);
+        }
 
         public void Init(GameSession gameSession)
         {
@@ -45,14 +52,7 @@ namespace Assets.Scripts.Data
             _addSpeed.Button.onClick.AddListener(AddSpeed);
             _income.Button.onClick.AddListener(AddIncome);
 
-            InitValueForBuy();
-        }
-
-        private void OnDisable()
-        {
-            _addMinion.Button.onClick.RemoveListener(AddMinion);
-            _addSpeed.Button.onClick.RemoveListener(AddSpeed);
-            _income.Button.onClick.RemoveListener(AddIncome);
+            InitializeValueForBuy();
         }
 
         public void SellItem()
@@ -61,32 +61,40 @@ namespace Assets.Scripts.Data
             int earnings = _gameSession.CostOfSaleItem + spread;
             _earningsPerLevel += earnings;
             int newValueOfMoney = PlayerData.Instance.Money + earnings;
-            
-            if (newValueOfMoney < 0)
+
+            if (CheckOutOfRange(newValueOfMoney))
                 PlayerData.Instance.Money = int.MaxValue;
             else
                 PlayerData.Instance.Money = newValueOfMoney;
 
-            ItemSold?.Invoke(_itemManager.MaxCountOfItems, ++_countSoldItems);
-            Sound.Instance.PlaySFX(CollectionOfSounds.Coin);
-            _sellItemParticle.Play();
-            
+            OnSellItem();
+
             if (_itemManager.MaxCountOfItems == _countSoldItems)
                 AllItemsSold?.Invoke();
         }
 
-        private void InitValueForBuy()
+        private void InitializeValueForBuy()
         {
-            _addMinion.ImprovementButton.SetValues(1, _gameSession.MinionCost);
+            int initialNumberOfMinions = 1;
+            _addMinion.ImprovementButton.SetValues(initialNumberOfMinions, _gameSession.MinionCost);
             _addSpeed.ImprovementButton.SetValues(_gameSession.MinionSpeedLevel, _gameSession.SpeedCost);
             _income.ImprovementButton.SetValues(_gameSession.IncomeLevel, _gameSession.IncomeCost);
         }
 
+        private void OnSellItem()
+        {
+            ItemSold?.Invoke(_itemManager.MaxCountOfItems, ++_countSoldItems);
+            Sound.Instance.PlaySFX(CollectionOfSounds.Coin);
+            _sellItemParticle.Play();
+        }
+
+        private bool CheckOutOfRange(int value) => value < 0;
+
         private bool TryPay(int payment)
         {
-            if (PlayerData.Instance.Money - payment < 0.01f)
+            if (PlayerData.Instance.Money - payment < 0)
                 return false;
-            
+
             PlayerData.Instance.Money -= payment;
             return true;
         }
@@ -94,7 +102,7 @@ namespace Assets.Scripts.Data
         private void AddMinion()
         {
             bool isTherePlaceForMinions = _itemManager.CountOfItems > 0 &&
-                                    _minionSpawner.CountOfMinions < PlayerData.Instance.Config.MaxCountOfMinions;
+                                          _minionSpawner.CountOfMinions < PlayerData.Instance.Config.MaxCountOfMinions;
 
             if (isTherePlaceForMinions)
             {
@@ -103,7 +111,7 @@ namespace Assets.Scripts.Data
                     _minionSpawner.AddMinion();
                     _gameSession.UpdateMinionCost();
                     _addMinion.ImprovementButton.SetValues(_minionSpawner.CountOfMinions, _gameSession.MinionCost);
-                    _addMinion.ImprovementButton.Particle.Play();
+                    _addMinion.ImprovementButton.PlayBuyParticle();
                 }
                 else
                 {
@@ -124,7 +132,7 @@ namespace Assets.Scripts.Data
                 _gameSession.UpdateSpeedCost();
                 _minionSpawner.AddSpeed();
                 _addSpeed.ImprovementButton.SetValues(_gameSession.MinionSpeedLevel, _gameSession.SpeedCost);
-                _addSpeed.ImprovementButton.Particle.Play();
+                _addSpeed.ImprovementButton.PlayBuyParticle();
             }
             else
             {
@@ -138,7 +146,7 @@ namespace Assets.Scripts.Data
             {
                 _gameSession.UpdateItemCost();
                 _income.ImprovementButton.SetValues(_gameSession.IncomeLevel, _gameSession.IncomeCost);
-                _income.ImprovementButton.Particle.Play();
+                _income.ImprovementButton.PlayBuyParticle();
             }
             else
             {

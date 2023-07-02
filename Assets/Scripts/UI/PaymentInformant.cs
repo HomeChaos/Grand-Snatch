@@ -20,8 +20,7 @@ namespace Assets.Scripts.UI
         
         private void Awake()
         {
-            var items = new List<InfoElement>
-                {_enoughMinions, _notMoneyForMinions, _notMoneyForSpeed, _notMoneyForIncome};
+            var items = new List<InfoElement> {_enoughMinions, _notMoneyForMinions, _notMoneyForSpeed, _notMoneyForIncome};
 
             foreach (var item in items)
             {
@@ -35,9 +34,9 @@ namespace Assets.Scripts.UI
             StartAnimation(_enoughMinions);
         }
         
-        public void ShowInfoNotEnoughMoney(LackOfMoney op)
+        public void ShowInfoNotEnoughMoney(LackOfMoney lackOfMoney)
         {
-            switch (op)
+            switch (lackOfMoney)
             {
                 case LackOfMoney.Minions:
                     StartAnimation(_notMoneyForMinions);
@@ -51,7 +50,7 @@ namespace Assets.Scripts.UI
             }
         }
 
-        public void StartAnimation(InfoElement element)
+        private void StartAnimation(InfoElement element)
         {
             if (_coroutine == null)
                 _coroutine = StartCoroutine(ApplyAnimation(element));
@@ -77,7 +76,6 @@ namespace Assets.Scripts.UI
         [SerializeField] private Image _image;
 
         public TMP_Text Text => _text;
-
         public Image Image => _image;
     }
 }

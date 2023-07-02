@@ -1,5 +1,4 @@
-﻿using System;
-using Assets.Scripts.Data;
+﻿using Assets.Scripts.Data;
 using Assets.Scripts.Sounds;
 using Assets.Scripts.UI;
 using TMPro;
@@ -10,7 +9,6 @@ namespace Assets.Scripts.MainCore
 {
     public class MainMenuStart : MonoBehaviour
     {
-        [SerializeField] private SettingsWindow _settingsWindow;
         [SerializeField] private Localizer _localizer;
         [SerializeField] private TMP_Text _money;
         
@@ -24,17 +22,10 @@ namespace Assets.Scripts.MainCore
             Sound.Instance.PlayBackgroundMusic(CollectionOfSounds.MainMenu);
         }
 
-        private void OnDestroy()
-        {
-            PlayerData.Instance.SaveData();
-        }
-
         private void ApplyGameSettings()
         {
             _money.text = NumberSeparator.SplitNumber(PlayerData.Instance.Money);
             _localizer.Init();
-            _settingsWindow.Init();
-            
         }
     }
 }

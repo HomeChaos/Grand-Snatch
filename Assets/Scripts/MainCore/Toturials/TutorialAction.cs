@@ -3,7 +3,7 @@ using UnityEngine.Events;
 
 namespace Assets.Scripts.MainCore.Toturials
 {
-    public abstract class TutorialAction : MonoBehaviour, ITutorialAction
+    public abstract class TutorialAction : MonoBehaviour
     {
         [SerializeField] protected GameObject _message;
         

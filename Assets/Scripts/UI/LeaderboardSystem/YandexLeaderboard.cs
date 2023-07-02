@@ -22,7 +22,6 @@ namespace Assets.Scripts.UI.LeaderboardSystem
         {
             _showLeaderboard.onClick.AddListener(ShowLeaderboard);
             _closeLeaderboard.onClick.AddListener(CloseLeaderboard);
-           
         }
 
         private void OnDisable()
@@ -34,6 +33,7 @@ namespace Assets.Scripts.UI.LeaderboardSystem
         private void CloseLeaderboard()
         {
             _leaderboardView.gameObject.SetActive(false);
+            
             if (_cameraMovement != null)
                 _cameraMovement.enabled = true;
         }
@@ -41,31 +41,23 @@ namespace Assets.Scripts.UI.LeaderboardSystem
         private void ShowLeaderboard()
         {
             _leaderboardView.gameObject.SetActive(true);
+            
             if (_cameraMovement != null)
                 _cameraMovement.enabled = false;
-            Debug.Log("Authorized on");
+            
             Authorized();
-            Debug.Log("Authorized off");
-            Debug.Log("AddPlayerToLeaderboard on");
             AddPlayerToLeaderboard();
-            Debug.Log("AddPlayerToLeaderboard off");
-            Debug.Log("FormListOfPlayers on");
             FormListOfPlayers();
-            Debug.Log("FormListOfPlayers off");
-            Debug.Log("DisplayPlayersResults on");
             DisplayPlayersResults();
-            Debug.Log("DisplayPlayersResults off");
         }
 
         private void Authorized()
         {
             PlayerAccount.Authorize();
-            Debug.Log("Authorized yes");
+
             if (PlayerAccount.IsAuthorized)
             {
-                Debug.Log("RequestPersonalProfileDataPermission on");
                 PlayerAccount.RequestPersonalProfileDataPermission();
-                Debug.Log("RequestPersonalProfileDataPermission off");
             }
         }
         
@@ -90,9 +82,11 @@ namespace Assets.Scripts.UI.LeaderboardSystem
                 if (result == null || result.player == null)
                 {
                     _playerRanking.Initialize(new LeaderboardData(
-                        0, PlayerData.Instance.CurrentLocalization, 
-                        "Anonymous", 
-                        PlayerData.Instance.Level, ""));
+                        rank:0, 
+                        language: PlayerData.Instance.CurrentLocalization, 
+                        nickName: "Anonymous", 
+                        score: PlayerData.Instance.Level, 
+                        picture: ""));
                 }
                 else
                 {

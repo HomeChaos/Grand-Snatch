@@ -41,28 +41,12 @@ namespace Assets.Scripts.Shop
             _localized.UpdateLocalization();
 
             _iconCheck.SetActive(false);
-            
-            var numberOfOperationBeforeBuy = PlayerData.Instance.ConditionsForCars[price.CarType];
-            
-            if (numberOfOperationBeforeBuy == 0)
-            {
-                Unlock();
-            }
-            else if (price.IsBuyForAd)
-            {
-                _adIcon.SetActive(price.IsBuyForAd);
-                _cost.text = $"{numberOfOperationBeforeBuy} / {price.Cost}";
-            }
-            else
-            {
-                _cost.text = NumberSeparator.SplitNumber(price.Cost);
-            }
+
+            SetCorrectCost();
 
             if (PlayerData.Instance.SelectedCar == (int)price.CarType)
                 Select();
         }
-
-        private void OnClick() => Clicked?.Invoke(this, _price);
 
         public void Unlock()
         {
@@ -70,6 +54,8 @@ namespace Assets.Scripts.Shop
             _adIcon.SetActive(false);
             _cost.text = "";
         }
+
+        private void OnClick() => Clicked?.Invoke(this, _price);
 
         public void Select()
         {
@@ -85,6 +71,25 @@ namespace Assets.Scripts.Shop
         {
             var numberOfOperationBeforeBuy = PlayerData.Instance.ConditionsForCars[_price.CarType];
             _cost.text = $"{numberOfOperationBeforeBuy} / {_price.Cost}";
+        }
+
+        private void SetCorrectCost()
+        {
+            var numberOfOperationBeforeBuy = PlayerData.Instance.ConditionsForCars[_price.CarType];
+            
+            if (numberOfOperationBeforeBuy == 0)
+            {
+                Unlock();
+            }
+            else if (_price.IsBuyForAd)
+            {
+                _adIcon.SetActive(true);
+                _cost.text = $"{numberOfOperationBeforeBuy} / {_price.Cost}";
+            }
+            else
+            {
+                _cost.text = NumberSeparator.SplitNumber(_price.Cost) + " $";
+            }
         }
     }
 }

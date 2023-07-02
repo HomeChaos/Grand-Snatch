@@ -11,6 +11,7 @@ namespace Assets.Scripts.MainCore
         [SerializeField] private float _aminationTime = 1f;
 
         public event UnityAction OnAnimationComplete;
+        
         public ItemType Type => _type;
         
         public void Sell()

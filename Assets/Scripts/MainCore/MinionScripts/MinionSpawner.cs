@@ -14,7 +14,7 @@ namespace Assets.Scripts.MainCore.MinionScripts
 
         public int CountOfMinions => _minions.Count;
         
-        private void OnDisable()
+        private void OnDestroy()
         {
             foreach (Minion minion in _minions)
             {
@@ -28,9 +28,11 @@ namespace Assets.Scripts.MainCore.MinionScripts
                 return;
 
             Minion minion = Instantiate(_minionTemlate, _car.position, Quaternion.identity, transform).GetComponent<Minion>();
+            
             minion.Init(_car.position, _clicer);
             minion.OnSellItem += OnBroughtItem;
             minion.SetNewItem(_itemManager.GetNextItem());
+            
             _minions.Add(minion);
         }
 
@@ -45,13 +47,9 @@ namespace Assets.Scripts.MainCore.MinionScripts
         private void OnBroughtItem(Minion minion)
         {
             if (_itemManager.CountOfItems == 0)
-            {
                 DestroyMinion(minion);
-            }
             else
-            {
                 minion.SetNewItem(_itemManager.GetNextItem());
-            }
         }
 
         private void DestroyMinion(Minion minion)

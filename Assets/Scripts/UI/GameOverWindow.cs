@@ -3,18 +3,16 @@ using Assets.Scripts.Data;
 using Assets.Scripts.MainCore;
 using Assets.Scripts.Sounds;
 using Assets.Scripts.YandexSDK;
-using DefaultNamespace;
-using IJunior.TypedScenes;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.UI
 {
     public class GameOverWindow : MonoBehaviour
     {
-        [SerializeField] private ParticleSystem _particle;
+        [FormerlySerializedAs("_particle")] [SerializeField] private ParticleSystem _levelCompletionEffect;
         [SerializeField] private TMP_Text _textLevel;
         [SerializeField] private TMP_Text _textRevard;
         [SerializeField] private Button _buttonNextLevel;
@@ -27,9 +25,11 @@ namespace Assets.Scripts.UI
         {
             _cameraMovement.enabled = false;
             Sound.Instance.PlayUISFX(CollectionOfSounds.Win);
+            _levelCompletionEffect.Play();
+            
             _buttonNextLevel.onClick.AddListener(LoadNextLevel);
             _buttonIncreaseRevenue.onClick.AddListener(WatchAdForMultiplicationOfReward);
-            _particle.Play();
+            
             _textRevard.text = $"+{NumberSeparator.SplitNumber(PaymentSystem.Instance.EarningsPerLevel)} $";
             UpdateLevel();
         }
@@ -48,7 +48,7 @@ namespace Assets.Scripts.UI
         private void OnRewarded()
         {
             int additionalMoney = PaymentSystem.Instance.EarningsPerLevel;
-            _textRevard.text = NumberSeparator.SplitNumber(PaymentSystem.Instance.EarningsPerLevel * 2);
+            _textRevard.text = $"+{NumberSeparator.SplitNumber(PaymentSystem.Instance.EarningsPerLevel * 2)} $";
             _buttonIncreaseRevenue.gameObject.SetActive(false);
 
             if (PlayerData.Instance.Money + additionalMoney < 0)

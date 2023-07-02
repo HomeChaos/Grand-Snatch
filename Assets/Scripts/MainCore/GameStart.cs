@@ -26,11 +26,6 @@ namespace Assets.Scripts.MainCore
             ApplyGameSettings();
         }
 
-        private void OnDestroy()
-        {
-            PlayerData.Instance.SaveData();
-        }
-
         private void ApplyGameSettings()
         {
             _garage.Init();

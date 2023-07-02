@@ -27,9 +27,9 @@ namespace Assets.Scripts.Shop
         private void ApplyGameSettings()
         {
             PlayerData.Instance.MoneyChanged += InstanceOnMoneyChanged;
+            InstanceOnMoneyChanged(PlayerData.Instance.Money);
             _localizer.Init();
             _shop.Init();
-            _money.text = NumberSeparator.SplitNumber(PlayerData.Instance.Money);
             Sound.Instance.PlayBackgroundMusic(CollectionOfSounds.MainMenu);
         }
 

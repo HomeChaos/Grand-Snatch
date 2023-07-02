@@ -169,7 +169,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _minDistance: 2
-  _pointToObject: {fileID: 720906395407304664}
+  _pointOfObjectPosition: {fileID: 720906395407304664}
   _animator: {fileID: 4284529884283337366}
 --- !u!114 &3119078907503984876
 MonoBehaviour:

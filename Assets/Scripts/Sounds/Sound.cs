@@ -41,18 +41,18 @@ namespace Assets.Scripts.Sounds
             PlayerData.Instance.SFXStatusChange += OnSFXStatusChange;
         }
 
-        private void OnDisable()
-        {
-            PlayerData.Instance.MusicStatusChange -= OnMusicStatusChange;
-            PlayerData.Instance.SFXStatusChange -= OnSFXStatusChange;
-        }
-
         private void OnValidate()
         {
             var duplicates = _soundItems.GroupBy(sound => sound.Type).SelectMany(item => item.Skip(1)).ToArray();
 
             if (duplicates.Length > 0)
                 throw new System.ArgumentException("Warning! There should be no duplicates in the list of sounds when specifying types!");
+        }
+
+        private void OnDestroy()
+        {
+            PlayerData.Instance.MusicStatusChange -= OnMusicStatusChange;
+            PlayerData.Instance.SFXStatusChange -= OnSFXStatusChange;
         }
 
         public void PlayBackgroundMusic(CollectionOfSounds type)
@@ -76,7 +76,7 @@ namespace Assets.Scripts.Sounds
 
         public void PlayUISFX(CollectionOfSounds type)
         {
-            if (_isSFXOn && _isHidden == false)
+            if (_isSFXOn && _UISfx.isPlaying == false && _isHidden == false)
                 Play(_UISfx, type);
         }
 
@@ -111,7 +111,9 @@ namespace Assets.Scripts.Sounds
             foreach (var sound in sounds)
             {
                 if (sound != this)
+                {
                     Destroy(gameObject);
+                }
             }
         }
 
@@ -133,16 +135,6 @@ namespace Assets.Scripts.Sounds
             source.Play();
         }
 
-        private void OnSFXStatusChange()
-        {
-            _isSFXOn = PlayerData.Instance.IsSFXOn;
-
-            if (_isSFXOn)
-                _backgroundSounds.Play();
-            else
-                _backgroundSounds.Stop();
-        }
-
         private void OnMusicStatusChange()
         {
             _isMusicOn = PlayerData.Instance.IsMusicOn;
@@ -151,6 +143,16 @@ namespace Assets.Scripts.Sounds
                 _backgroundMusic.Play();
             else
                 _backgroundMusic.Stop();
+        }
+
+        private void OnSFXStatusChange()
+        {
+            _isSFXOn = PlayerData.Instance.IsSFXOn;
+
+            if (_isSFXOn)
+                _backgroundSounds.Play();
+            else
+                _backgroundSounds.Stop();
         }
     }
 

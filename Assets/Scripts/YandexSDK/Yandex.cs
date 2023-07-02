@@ -16,10 +16,12 @@ namespace Assets.Scripts.YandexSDK
 
         private IEnumerator Start()
         {
-#if UNITY_EDITOR
-            LoadPlayerData();
-            yield break;
-#endif
+            if (Application.isEditor)
+            {
+                LoadPlayerData();
+                yield break;
+            }
+
             yield return YandexGamesSdk.Initialize(LoadPlayerData);
         }
 

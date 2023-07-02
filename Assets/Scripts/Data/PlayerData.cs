@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Agava.YandexGames;
 using Assets.Scripts.Shop;
 using Assets.Scripts.UI.Localization;
@@ -8,8 +9,10 @@ using UnityEngine.Events;
 
 namespace Assets.Scripts.Data
 {
-    public class PlayerData : MonoBehaviour, IDisposable
+    public class PlayerData : MonoBehaviour
     {
+        #region PlayerPrefs Keys
+
         private const string MoneyKey = "Money";
         private const string LevelKey = "Level";
         private const string MusicKey = "Music";
@@ -17,12 +20,21 @@ namespace Assets.Scripts.Data
         private const string LocalizationKey = "Localization";
         private const string SelectedCarKey = "Car";
         private const string ConditionsForCarsKey = "Conditions";
-        
+
+        #endregion
+
+        #region Default Values
+
         private const int MoneyDefault = 100;
         private const int LevelDefault = 1;
         private const bool MusicDefault = true;
         private const bool SFXDefault = true;
         private const int SelectedCarDefault = 0;
+
+        #endregion
+
+        private const string ConfigName = "GameConfig";
+        private const string PriceListName = "PriceList";
 
         public static PlayerData Instance { get; private set; }
 
@@ -37,13 +49,11 @@ namespace Assets.Scripts.Data
 
         public Config Config => _config;
 
-        #region Propertys        
+        #region Propertys
+
         public int Money
         {
-            get
-            {
-                return _money;
-            }
+            get { return _money; }
             set
             {
                 if (value < 0 && value > Int32.MaxValue)
@@ -57,22 +67,19 @@ namespace Assets.Scripts.Data
 
         public int Level
         {
-            get
-            {
-                return _level;
-            }
+            get { return _level; }
             set
             {
-                _level = value;
+                if (value - _level == 1)
+                    _level = value;
+                else
+                    throw new RankException("The new level must differ from the old one by one.");
             }
         }
 
         public bool IsMusicOn
         {
-            get
-            {
-                return _isMusicOn;
-            }
+            get { return _isMusicOn; }
             set
             {
                 _isMusicOn = value;
@@ -80,12 +87,10 @@ namespace Assets.Scripts.Data
                 SaveData();
             }
         }
-        
-        public bool IsSFXOn {
-            get
-            {
-                return _isSFXOn;
-            }
+
+        public bool IsSFXOn
+        {
+            get { return _isSFXOn; }
             set
             {
                 _isSFXOn = value;
@@ -96,40 +101,46 @@ namespace Assets.Scripts.Data
 
         public string CurrentLocalization
         {
-            get
-            {
-                return _currentLocalization;
-            }
+            get { return _currentLocalization; }
             set
             {
-                _currentLocalization = value;
-                LanguageChange?.Invoke(_currentLocalization);
+                if (Language.ListOfAllLanguage.Contains(value))
+                {
+                    _currentLocalization = value;
+                    LanguageChange?.Invoke(_currentLocalization);
+                }
+                else
+                {
+                    throw new ArgumentException($"Incorrect language value: {value}");
+                }                
             }
         }
 
         public int SelectedCar
         {
-            get
-            {
-                return _selectedCar;
-            }
+            get { return _selectedCar; }
             set
             {
-                if (0 <= value)
+                if (value >= 0)
                     _selectedCar = value;
                 else
-                    throw new RankException("Incorrect value of car type!");
+                    throw new RankException("Incorrect value of car type");
             }
         }
 
         public IReadOnlyDictionary<CarType, int> ConditionsForCars => _conditionsForCars;
+        
+        #endregion
 
         public event UnityAction MusicStatusChange;
         public event UnityAction SFXStatusChange;
         public event UnityAction<int> MoneyChanged;
         public event UnityAction<string> LanguageChange;
 
-        #endregion
+        private void OnDestroy()
+        {
+            SaveData();
+        }
 
         public void Initialize()
         {
@@ -138,16 +149,11 @@ namespace Assets.Scripts.Data
             LoadData();
         }
 
-        public void Dispose()
-        {
-            SaveData();
-        }
-
         public void ChangeConditionForCar(CarType type)
         {
             if (_conditionsForCars[type] - 1 < 0)
                 throw new RankException("Incorrect value for the car condition");
-                
+
             _conditionsForCars[type]--;
         }
 
@@ -164,19 +170,6 @@ namespace Assets.Scripts.Data
             PlayerPrefs.Save();
         }
 
-
-        [ContextMenu("Delete Data")]
-        public void DeleteData()
-        {
-            PlayerPrefs.DeleteKey(MoneyKey);
-            PlayerPrefs.DeleteKey(LevelKey);
-            PlayerPrefs.DeleteKey(MusicKey);
-            PlayerPrefs.DeleteKey(SFXKey);
-            PlayerPrefs.DeleteKey(LocalizationKey);
-            PlayerPrefs.DeleteKey(SelectedCarKey);
-            PlayerPrefs.DeleteKey(ConditionsForCarsKey);
-        }
-
         [ContextMenu("Reset Data")]
         public void ResetData()
         {
@@ -187,24 +180,25 @@ namespace Assets.Scripts.Data
             _currentLocalization = DetermineBrowserLanguage();
             _selectedCar = SelectedCarDefault;
             LoadConditionsFromPriceList();
-            
+
             SaveData();
         }
 
         private void LoadData()
         {
-            _config = Resources.Load<Config>("GameConfig");
+            _config = Resources.Load<Config>(ConfigName);
             _money = PlayerPrefs.HasKey(MoneyKey) ? PlayerPrefs.GetInt(MoneyKey) : MoneyDefault;
             _level = PlayerPrefs.HasKey(LevelKey) ? PlayerPrefs.GetInt(LevelKey) : LevelDefault;
             _isMusicOn = PlayerPrefs.HasKey(MusicKey) ? Convert.ToBoolean(PlayerPrefs.GetInt(MusicKey)) : MusicDefault;
             _isSFXOn = PlayerPrefs.HasKey(SFXKey) ? Convert.ToBoolean(PlayerPrefs.GetInt(SFXKey)) : SFXDefault;
             _currentLocalization = PlayerPrefs.HasKey(LocalizationKey) ? PlayerPrefs.GetString(LocalizationKey) : DetermineBrowserLanguage();
             _selectedCar = PlayerPrefs.HasKey(SelectedCarKey) ? PlayerPrefs.GetInt(SelectedCarKey) : SelectedCarDefault;
+            
             LoadConditionsForCars();
-
+            
             LoadMainMenu();
         }
-        
+
         private void LoadMainMenu()
         {
             IJunior.TypedScenes.MainMenu.Load();
@@ -215,14 +209,15 @@ namespace Assets.Scripts.Data
             if (PlayerPrefs.HasKey(ConditionsForCarsKey) && PlayerPrefs.GetString(ConditionsForCarsKey).Length > 0)
             {
                 string[] encryptedDate = PlayerPrefs.GetString(ConditionsForCarsKey).Split(';');
+                
                 foreach (var date in encryptedDate)
                 {
                     string[] pairOfValues = date.Split(',');
-                    
+
                     int key = int.Parse(pairOfValues[0]);
                     int value = int.Parse(pairOfValues[1]);
 
-                    _conditionsForCars[(CarType)key] = value;
+                    _conditionsForCars[(CarType) key] = value;
                 }
             }
             else
@@ -233,7 +228,7 @@ namespace Assets.Scripts.Data
 
         private void LoadConditionsFromPriceList()
         {
-            var priceList = Resources.Load<PriceList>("PriceList");
+            var priceList = Resources.Load<PriceList>(PriceListName);
 
             foreach (var item in priceList.Prices)
             {
@@ -251,9 +246,9 @@ namespace Assets.Scripts.Data
 
             foreach (var conditions in _conditionsForCars)
             {
-                data.Add($"{(int)conditions.Key},{conditions.Value}");
+                data.Add($"{(int) conditions.Key},{conditions.Value}");
             }
-            
+
             string result = String.Join(';', data.ToArray());
             return result;
         }

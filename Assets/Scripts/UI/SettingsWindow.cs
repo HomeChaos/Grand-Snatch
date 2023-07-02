@@ -10,32 +10,29 @@ namespace Assets.Scripts.UI
         [SerializeField] private Toggle _SFXToggle;
         [SerializeField] private Button _closeButton;
         [SerializeField] private Button _resetData;
-        [SerializeField] private Button _deleteData;
 
-        public void Init()
+        private void OnEnable()
         {
             _musicToggle.StateChange += OnMusicStateChange;
             _SFXToggle.StateChange += OnSFXStateChange;
             _closeButton.onClick.AddListener(CloseWindow);
             _resetData.onClick.AddListener(OnResetData);
-            _deleteData.onClick.AddListener(OnDeleteData);
-            
+
             _musicToggle.Init(PlayerData.Instance.IsMusicOn);
             _SFXToggle.Init(PlayerData.Instance.IsSFXOn);
         }
 
-        private void OnDestroy()
+        private void OnDisable()
         {
             _musicToggle.StateChange -= OnMusicStateChange;
             _SFXToggle.StateChange -= OnSFXStateChange;
             _closeButton.onClick.RemoveListener(CloseWindow);
             _resetData.onClick.RemoveListener(OnResetData);
-            _deleteData.onClick.RemoveListener(OnDeleteData);
 
             _musicToggle.Dispose();
             _SFXToggle.Dispose();
         }
-        
+
         private void CloseWindow()
         {
             gameObject.SetActive(false);
@@ -46,11 +43,6 @@ namespace Assets.Scripts.UI
             PlayerData.Instance.ResetData();
         }
 
-        private void OnDeleteData()
-        {
-            PlayerData.Instance.DeleteData();
-        }
-        
         private void OnMusicStateChange(bool state)
         {
             PlayerData.Instance.IsMusicOn = state;

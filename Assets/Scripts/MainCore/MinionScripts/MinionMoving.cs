@@ -11,11 +11,11 @@ namespace Assets.Scripts.MainCore.MinionScripts
         private readonly int _pickupKey = Animator.StringToHash("Pickup");
 
         [SerializeField] private float _minDistance = 2f;
-        [SerializeField] private Transform _pointToObject;
+        [SerializeField] private Transform _pointOfObjectPosition;
         [SerializeField] private Animator _animator;
 
         private NavMeshAgent _agent;
-        private Vector3 _carPositon;
+        private Vector3 _carPosition;
         private Item _targetItem;
         private IEnumerator _currentState;
 
@@ -26,17 +26,17 @@ namespace Assets.Scripts.MainCore.MinionScripts
         public void Init(NavMeshAgent agent, Vector3 carPosition)
         {
             _agent = agent;
-            _carPositon = carPosition;
+            _carPosition = carPosition;
         }
 
         public void GoToItem(Item item)
         {
             _targetItem = item;
 
-            var itemPositon = _targetItem.gameObject.transform.position;
+            var targetPosition = _targetItem.gameObject.transform.position;
             MinionAction stopNearItem = WaitToPickupItem;
 
-            StartState(GoToTarget(itemPositon, stopNearItem));
+            StartState(GoToTarget(targetPosition, stopNearItem));
         }
 
         private void WaitToPickupItem()
@@ -44,7 +44,7 @@ namespace Assets.Scripts.MainCore.MinionScripts
             _agent.isStopped = true;
 
             _targetItem.OnAnimationComplete += TakeItem;
-            _targetItem.PlayLiftingAnimation(_pointToObject.position);
+            _targetItem.PlayLiftingAnimation(_pointOfObjectPosition.position);
 
             _animator.SetTrigger(_pickupKey);
         }
@@ -74,7 +74,7 @@ namespace Assets.Scripts.MainCore.MinionScripts
             _agent.isStopped = false;
 
             MinionAction sellItem = SellItem;
-            StartState(GoToTarget(_carPositon, sellItem));
+            StartState(GoToTarget(_carPosition, sellItem));
         }
 
         private void SellItem()

@@ -7,30 +7,34 @@ namespace Assets.Scripts.UI.Localization
     [RequireComponent(typeof(Button))]
     public class Flag : MonoBehaviour
     {
-        [SerializeField] private GameObject _icon_check;
+        [SerializeField] private GameObject _iconCheck;
         [SerializeField] private string _language;
 
         private Button _button;
 
         public string Language => _language;
         
-        public event UnityAction<Flag, string> FlagClicked; 
-        
-        
+        public event UnityAction<Flag, string> FlagClicked;
+
         private void Awake()
         {
             _button = GetComponent<Button>();
             _button.onClick.AddListener(OnClickFlag);
         }
 
-        private void OnClickFlag()
+        private void OnDestroy()
         {
-            FlagClicked?.Invoke(this, _language);
+            _button.onClick.RemoveListener(OnClickFlag);
         }
 
         public void SetIconActive(bool iconEnabled)
         {
-            _icon_check.SetActive(iconEnabled);
+            _iconCheck.SetActive(iconEnabled);
+        }
+
+        private void OnClickFlag()
+        {
+            FlagClicked?.Invoke(this, _language);
         }
     }
 }

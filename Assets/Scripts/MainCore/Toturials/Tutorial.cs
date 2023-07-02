@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Assets.Scripts.MainCore.Toturials
 {
     public class Tutorial : MonoBehaviour
     {
         [SerializeField] private List<TutorialAction> _actions;
-        [SerializeField] private float _delayBeforeStart;
+        [SerializeField] private float _delayBeforeStart = 2f;
         [SerializeField][Range(1f, 10f)] private float _delayAfterShowing = 5f;
 
         private int _currentNumberOfTutorial = 0;

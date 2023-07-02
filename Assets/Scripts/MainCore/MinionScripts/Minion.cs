@@ -14,18 +14,18 @@ namespace Assets.Scripts.MainCore.MinionScripts
 
         public event UnityAction<Minion> OnSellItem;
 
-        private void OnDisable()
+        private void OnDestroy()
         {
             _minionMoving.OnSellItem -= SellItem;
         }
 
-        public void Init(Vector3 carPositon, Clicker clicker)
+        public void Init(Vector3 carPosition, Clicker clicker)
         {
             var agent = GetComponent<NavMeshAgent>();
             _minionMoving = GetComponent<MinionMoving>();
             _minionBoost = GetComponent<MinionBoost>();
 
-            _minionMoving.Init(agent, carPositon);
+            _minionMoving.Init(agent, carPosition);
             _minionBoost.Init(agent, clicker);
 
             _minionMoving.OnSellItem += SellItem;

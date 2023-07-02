@@ -12,10 +12,9 @@ namespace Assets.Scripts.MainCore.MinionScripts
 
         private NavMeshAgent _agent;
         private Clicker _clicker;
-        
         private Coroutine _boost;
 
-        private void OnDisable()
+        private void OnDestroy()
         {
             if (_clicker != null)
                 _clicker.OnClick -= EnableBoost;

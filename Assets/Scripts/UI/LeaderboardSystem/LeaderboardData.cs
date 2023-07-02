@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace Assets.Scripts.UI.LeaderboardSystem
+﻿namespace Assets.Scripts.UI.LeaderboardSystem
 {
     public class LeaderboardData
     {

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -10,19 +11,13 @@ namespace Assets.Scripts.MainCore
 
         private Queue<Item> _queueBigItems = new Queue<Item>();
         private Queue<Item> _queueSmallItems = new Queue<Item>();
-        private int _maxCountOfItems;
-        
-        public event UnityAction AllDone;
-        
-        public int CountOfItems => _queueBigItems.Count + _queueSmallItems.Count;
 
-        public int MaxCountOfItems => _maxCountOfItems;
+        public int CountOfItems => _queueBigItems.Count + _queueSmallItems.Count;
+        public int MaxCountOfItems => _items.Length;
 
         public void Init()
         {
-            Shuffle(_items);
-
-            _maxCountOfItems = _items.Length;
+            ShuffleItems(_items);
 
             foreach (var item in _items)
             {
@@ -40,15 +35,12 @@ namespace Assets.Scripts.MainCore
         public Item GetNextItem()
         {
             if (CountOfItems == 0)
-            {
-                AllDone?.Invoke();
-                return null;
-            }                
+                return null;             
 
             return _queueSmallItems.Count > 0 ? _queueSmallItems.Dequeue() : _queueBigItems.Dequeue();
         }
 
-        private void Shuffle(Item[] array)
+        private void ShuffleItems(Item[] array)
         {
             int upperIndex = array.Length - 1;
             int lowerIndex = 0;

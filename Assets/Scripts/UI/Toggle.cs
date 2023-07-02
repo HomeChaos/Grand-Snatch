@@ -1,11 +1,12 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.UI
 {
-    [System.Serializable]
-    public class Toggle : System.IDisposable
+    [Serializable]
+    public class Toggle : IDisposable
     {
         [SerializeField] private Button _toggleOn;
         [SerializeField] private Button _toggleOff;

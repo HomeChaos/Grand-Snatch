@@ -59,7 +59,7 @@ namespace Assets.Scripts.UI.LeaderboardSystem
         {
             var countryImg = Resources.Load<LeaderboardCountry>(_leaderboardCountryKey);
 
-            switch (language)
+            switch (Language.DefineLanguage(language))
             {
                 case Language.ENG:
                     _country.sprite = countryImg.Eng;

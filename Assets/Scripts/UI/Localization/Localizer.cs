@@ -1,5 +1,4 @@
-﻿using System;
-using Assets.Scripts.Data;
+﻿using Assets.Scripts.Data;
 using Lean.Localization;
 using UnityEngine;
 

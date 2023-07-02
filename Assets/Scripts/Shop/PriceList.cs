@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Lean.Localization;
 using UnityEngine;
 
 namespace Assets.Scripts.Shop

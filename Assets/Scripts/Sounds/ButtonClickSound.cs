@@ -4,7 +4,7 @@ using UnityEngine.UI;
 namespace Assets.Scripts.Sounds
 {
     [RequireComponent(typeof(Button))]
-    public class ClickSound : MonoBehaviour
+    public class ButtonClickSound : MonoBehaviour
     {
         private Button _button;
 

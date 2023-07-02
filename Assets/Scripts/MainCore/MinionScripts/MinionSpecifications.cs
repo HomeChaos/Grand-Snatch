@@ -3,7 +3,7 @@ using Assets.Scripts.Data;
 
 namespace Assets.Scripts.MainCore.MinionScripts
 {
-    public class MinionSpecifications : IDisposable
+    public class MinionSpecifications
     {
         private const int RatioOfSpeedToLevel = 5;
         
@@ -24,11 +24,6 @@ namespace Assets.Scripts.MainCore.MinionScripts
         {
             _minSpeed += PlayerData.Instance.Config.SpeedDelta;
             _maxSpeed += PlayerData.Instance.Config.SpeedDelta;
-        }
-
-        public void Dispose()
-        {
-            throw new NotImplementedException();
         }
     }
 }

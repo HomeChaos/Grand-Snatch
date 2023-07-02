@@ -16,8 +16,7 @@ namespace Assets.Scripts.Shop
         [SerializeField] private MessageBox _messageBoxBuy;
         [SerializeField] private MessageBox _messageBoxNotEnoughMoney;
         [SerializeField] private Button _exitButton;
-
-        [Space] [Header("AD")]
+        [Space] 
         [SerializeField] private YandexAd _yandexAd;
 
         private List<Product> _products = new List<Product>();
@@ -40,14 +39,14 @@ namespace Assets.Scripts.Shop
             for (int i = 0; i < _priceList.Prices.Count; i++)
             {
                 var item = _priceList.Prices[i];
-                
+
                 var product = Instantiate(_productTemplate, _conteiner.transform).GetComponent<Product>();
                 product.Init(item);
                 product.Clicked += OnProductClicked;
-                
+
                 _products.Add(product);
             }
-            
+
             _exitButton.onClick.AddListener(Exit);
         }
 
@@ -64,7 +63,7 @@ namespace Assets.Scripts.Shop
 
             if (PlayerData.Instance.ConditionsForCars[carType] == 0)
                 ChangeSelectCar();
-            else if (price.IsBuyForAd) 
+            else if (price.IsBuyForAd)
                 ShowMessageBoxWatchAd();
             else
                 TryBuyCar();
@@ -74,15 +73,15 @@ namespace Assets.Scripts.Shop
         {
             foreach (var product in _products)
                 product.UnSelect();
-                
+
             _currentProduct.Select();
-            PlayerData.Instance.SelectedCar = (int)_currentPrice.CarType;
+            PlayerData.Instance.SelectedCar = (int) _currentPrice.CarType;
         }
 
         private void TryBuyCar()
         {
             bool сanPay = PlayerData.Instance.Money - _currentPrice.Cost >= 0;
-            
+
             if (сanPay)
                 ShowMessageBoxBuy();
             else
@@ -105,10 +104,9 @@ namespace Assets.Scripts.Shop
         {
             _messageBoxWatchAd.IsConfirmAction -= ProcessingReceivedFromMessageBox;
             _messageBoxBuy.IsConfirmAction -= ProcessingReceivedFromMessageBox;
-            
+
             if (response)
             {
-
                 if (_currentPrice.IsBuyForAd)
                 {
                     _yandexAd.OnShowVideoButtonClick(OnRewarded);
@@ -127,11 +125,9 @@ namespace Assets.Scripts.Shop
             PlayerData.Instance.ChangeConditionForCar(_currentPrice.CarType);
             PlayerData.Instance.SaveData();
             _currentProduct.UpdateCostText();
-                    
+
             if (PlayerData.Instance.ConditionsForCars[_currentPrice.CarType] == 0)
-            {
                 _currentProduct.Unlock();
-            }
         }
     }
 }
