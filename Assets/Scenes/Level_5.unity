@@ -52016,10 +52016,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: RankingPanel
       objectReference: {fileID: 0}
-    - target: {fileID: 477333281642252884, guid: 68d728fd450751641b4d853e43a4bbfc, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 477333281642252885, guid: 68d728fd450751641b4d853e43a4bbfc, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -52103,6 +52099,14 @@ PrefabInstance:
     - target: {fileID: 477333281642252885, guid: 68d728fd450751641b4d853e43a4bbfc, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5325245357361829341, guid: 68d728fd450751641b4d853e43a4bbfc, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9200022415384163857, guid: 68d728fd450751641b4d853e43a4bbfc, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 68d728fd450751641b4d853e43a4bbfc, type: 3}
@@ -58005,7 +58009,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.120694526}
   m_AnchorMax: {x: 0.5, y: 0.120694526}
-  m_AnchoredPosition: {x: -237.8, y: -5.3007812}
+  m_AnchoredPosition: {x: -237.8, y: -5.3008423}
   m_SizeDelta: {x: 442.90527, y: 145}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &4262258751516013752
@@ -64032,7 +64036,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.120694526}
   m_AnchorMax: {x: 0.5, y: 0.120694526}
-  m_AnchoredPosition: {x: 239.5, y: -5.3007812}
+  m_AnchoredPosition: {x: 239.5, y: -5.3008423}
   m_SizeDelta: {x: 442.9053, y: 145}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &4262258753495070884

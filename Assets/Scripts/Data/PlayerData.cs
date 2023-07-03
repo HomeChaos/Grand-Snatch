@@ -170,20 +170,6 @@ namespace Assets.Scripts.Data
             PlayerPrefs.Save();
         }
 
-        [ContextMenu("Reset Data")]
-        public void ResetData()
-        {
-            _money = MoneyDefault;
-            _level = LevelDefault;
-            _isMusicOn = MusicDefault;
-            _isSFXOn = SFXDefault;
-            _currentLocalization = DetermineBrowserLanguage();
-            _selectedCar = SelectedCarDefault;
-            LoadConditionsFromPriceList();
-
-            SaveData();
-        }
-
         private void LoadData()
         {
             _config = Resources.Load<Config>(ConfigName);

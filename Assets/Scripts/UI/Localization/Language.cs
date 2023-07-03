@@ -1,4 +1,6 @@
-﻿namespace Assets.Scripts.UI.Localization
+﻿using System.Collections.Generic;
+
+namespace Assets.Scripts.UI.Localization
 {
     public static class Language
     {
@@ -7,7 +9,7 @@
         public const string TUR = "Turkish";
         
         public static readonly string[] ListOfAllLanguage = {ENG, RUS, TUR};
-
+        
         public static string DefineLanguage(string lang)
         {
             switch (lang)
@@ -18,6 +20,21 @@
                     return TUR;
                 default:
                     return ENG;
+            }
+        }
+
+        public static string GetAnonymous(string lang)
+        {
+            switch (lang)
+            {
+                case ENG:
+                    return "Anonymous";
+                case RUS:
+                    return "Аноним";
+                case TUR:
+                    return "Anonim";
+                default:
+                    return "Anonymous";
             }
         }
     }
