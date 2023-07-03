@@ -46,59 +46,59 @@ namespace Assets.Scripts.UI.LeaderboardSystem
                 _cameraMovement.enabled = false;
             
             Authorized();
-            AddPlayerToLeaderboard();
-            FormListOfPlayers();
-            DisplayPlayersResults();
         }
 
         private void Authorized()
         {
-            PlayerAccount.Authorize();
+            PlayerAccount.Authorize(
+                onSuccessCallback: () =>
+                {
+                    PlayerAccount.RequestPersonalProfileDataPermission();
+                    AddPlayerToLeaderboard();
+                    FormListOfPlayers();
+                    DisplayPlayersResults();
+                },
+                onErrorCallback: (error) =>
+                {
+                    _leaderboardView.gameObject.SetActive(false);
+                });
 
-            if (PlayerAccount.IsAuthorized)
-            {
-                PlayerAccount.RequestPersonalProfileDataPermission();
-            }
+            Debug.Log("Authorized: yes");
         }
         
         private void AddPlayerToLeaderboard()
         {
-            if (PlayerAccount.IsAuthorized == false)
-                return;
         
-            Leaderboard.GetPlayerEntry(LeaderboardKey, (result) =>
-            {
-                Leaderboard.SetScore(LeaderboardKey, PlayerData.Instance.Level);
-            });            
+            Leaderboard.SetScore(LeaderboardKey, PlayerData.Instance.Level);         
+            Debug.Log("AddPlayerToLeaderboard: yes");
         }
 
         private void DisplayPlayersResults()
         {
             if (PlayerAccount.IsAuthorized == false)
-                return;
-            
-            Leaderboard.GetPlayerEntry(LeaderboardKey, (result) =>
             {
-                if (result == null || result.player == null)
-                {
-                    _playerRanking.Initialize(new LeaderboardData(
-                        rank:0, 
-                        language: PlayerData.Instance.CurrentLocalization, 
-                        nickName: "Anonymous", 
-                        score: PlayerData.Instance.Level, 
-                        picture: ""));
-                }
-                else
+                _playerRanking.Initialize(new LeaderboardData(
+                    rank:0, 
+                    language: PlayerData.Instance.CurrentLocalization, 
+                    nickName: "Anonymous", 
+                    score: PlayerData.Instance.Level, 
+                    picture: ""));
+            }
+            else
+            {
+                Leaderboard.GetPlayerEntry(LeaderboardKey, (result) =>
                 {
                     int rank = result.rank;
                     string language = result.player.lang;
                     string nickName = GetName(result.player.publicName);
                     int score = result.score;
                     string picture = result.player.profilePicture;
-                
+            
                     _playerRanking.Initialize(new LeaderboardData(rank, language, nickName, score, picture));
-                }
-            });
+                });
+            }
+            
+            Debug.Log("DisplayPlayersResults: yes");
         }
 
         private void FormListOfPlayers()
@@ -112,6 +112,7 @@ namespace Assets.Scripts.UI.LeaderboardSystem
 
                 for (int i = 0; i < resultAmount; i++)
                 {
+                    Debug.Log("for in FormListOfPlayers");
                     var entry = result.entries[i];
                     
                     int rank = entry.rank;
@@ -125,6 +126,8 @@ namespace Assets.Scripts.UI.LeaderboardSystem
                 
                 _leaderboardView.ConstructLeaderboard(players);
             });
+            
+            Debug.Log("FormListOfPlayers: yes");
         }
 
         private string GetName(string publicName)
