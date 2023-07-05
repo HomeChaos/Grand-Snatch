@@ -17,6 +17,8 @@ namespace Assets.Scripts.UI
         [SerializeField] private TMP_Text _textRevard;
         [SerializeField] private Button _buttonNextLevel;
         [SerializeField] private Button _buttonIncreaseRevenue;
+        [SerializeField] private Image _spriteIncreaseRevenue;
+        [SerializeField] private Sprite _disableSpriteForButton;
         [SerializeField] private YandexAd _yandexAd;
         [SerializeField] private CameraMovement _cameraMovement;
         [SerializeField] private LevelManager _levelManager;
@@ -42,6 +44,9 @@ namespace Assets.Scripts.UI
 
         private void WatchAdForMultiplicationOfReward()
         {
+            _spriteIncreaseRevenue.sprite = _disableSpriteForButton;
+            _buttonIncreaseRevenue.onClick.RemoveListener(WatchAdForMultiplicationOfReward);
+            _buttonIncreaseRevenue.enabled = false;
             _yandexAd.OnShowVideoButtonClick(OnRewarded);
         }
         
@@ -49,7 +54,6 @@ namespace Assets.Scripts.UI
         {
             int additionalMoney = PaymentSystem.Instance.EarningsPerLevel;
             _textRevard.text = $"+{NumberSeparator.SplitNumber(PaymentSystem.Instance.EarningsPerLevel * 2)} $";
-            _buttonIncreaseRevenue.gameObject.SetActive(false);
 
             if (PlayerData.Instance.Money + additionalMoney < 0)
                 PlayerData.Instance.Money = Int32.MaxValue;
